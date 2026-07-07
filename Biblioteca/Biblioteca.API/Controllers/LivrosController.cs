@@ -76,6 +76,23 @@
                 return BadRequest("O autor do livro é obrigatório.");
             }
 
+            if (livro.AnoPublicacao <= 0)
+            {
+                return BadRequest("O ano de publicação é inválido.");
+            }
+
+            if (livro.ExemplaresDisponiveis < 0)
+            {
+                return BadRequest("O número de exemplares disponíveis não pode ser negativo.");
+            }
+
+            bool livroJaExiste = dc.Livros.Any(l => l.Titulo == livro.Titulo && l.Autor == livro.Autor);
+
+            if (livroJaExiste)
+            {
+                return BadRequest("Já existe um livro com esse título e autor.");
+            }
+
             Categoria categoria = dc.Categorias.FirstOrDefault(c => c.IdCategoria == livro.IdCategoria);
 
             if (categoria == null)
@@ -98,6 +115,88 @@
                 livro.IdCategoria,
                 Categoria = categoria.Nome
             });
+        }
+
+        //PUT api/livros/1
+        public IHttpActionResult Put(int id, [FromBody] Livro livro)
+        {
+            if (livro == null)
+            {
+                return BadRequest("Dados do livro inválidos.");
+            }
+
+            if (string.IsNullOrWhiteSpace(livro.Titulo))
+            {
+                return BadRequest("O título do livro é obrigatório.");
+            }
+
+            if (string.IsNullOrWhiteSpace(livro.Autor))
+            {
+                return BadRequest("O autor do livro é obrigatório.");
+            }
+            
+            if (livro.AnoPublicacao <= 0)
+            {
+                return BadRequest("O ano de publicação é inválido.");
+            }
+
+            if (livro.ExemplaresDisponiveis < 0)
+            {
+                return BadRequest("O número de exemplares disponíveis não pode ser negativo.");
+            }
+
+            Categoria categoria = dc.Categorias.FirstOrDefault(c => c.IdCategoria == livro.IdCategoria);
+
+            if (categoria == null)
+            {
+                return BadRequest("A categoria indicada não existe.");
+            }
+
+            Livro livroExistente = dc.Livros.FirstOrDefault(l => l.IdLivro == id);
+
+            if (livroExistente == null)
+            {
+                return NotFound();
+            }
+
+            livroExistente.Titulo = livro.Titulo;
+            livroExistente.Autor = livro.Autor;
+            livroExistente.Editora = livro.Editora;
+            livroExistente.AnoPublicacao = livro.AnoPublicacao;
+            livroExistente.Genero = livro.Genero;
+            livroExistente.ExemplaresDisponiveis = livro.ExemplaresDisponiveis;
+            livroExistente.IdCategoria = livro.IdCategoria;
+
+            dc.SubmitChanges();
+
+            return Ok(new
+            {
+                livroExistente.IdLivro,
+                livroExistente.Titulo,
+                livroExistente.Autor,
+                livroExistente.Editora,
+                livroExistente.AnoPublicacao,
+                livroExistente.Genero,
+                livroExistente.ExemplaresDisponiveis,
+                livroExistente.IdCategoria,
+                Categoria = categoria.Nome
+            });
+        }
+
+        //DELETE api/livros/1
+        public IHttpActionResult Delete(int id)
+        {
+            Livro livro = dc.Livros.FirstOrDefault(l => l.IdLivro == id);
+
+            if (livro == null)
+            {
+                return NotFound();
+            }
+
+            dc.Livros.DeleteOnSubmit(livro);
+            dc.SubmitChanges();
+
+            return Ok();
         }
     }
 }
