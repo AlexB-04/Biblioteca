@@ -10,12 +10,14 @@
   <Table Name="dbo.Livros" Member="Livros">
     <Type Name="Livro">
       <Column Name="IdLivro" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodigoLivro" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="Titulo" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Autor" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="AnoPublicacao" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ISBN" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Editora" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="AnoPublicacao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Genero" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ExemplaresDisponiveis" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IdCategoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Disponivel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Categoria_Livro" Member="Categoria" ThisKey="IdCategoria" OtherKey="IdCategoria" Type="Categoria" IsForeignKey="true" />
     </Type>
   </Table>

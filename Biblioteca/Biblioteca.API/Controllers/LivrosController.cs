@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,18 +17,21 @@ namespace Biblioteca.API.Controllers
         //GET api/livros
         public IHttpActionResult Get()
         {
-            var livros = dc.Livros.Select(l => new
-            {
-                l.IdLivro,
-                l.Titulo,
-                l.Autor,
-                l.AnoPublicacao,
-                l.ISBN,
-                l.IdCategoria,
-                Categoria = l.Categoria.Nome,
-                l.Disponivel
-            })
-            .ToList();
+            var livros = dc.Livros
+        .Select(l => new
+        {
+            l.IdLivro,
+            l.CodigoLivro,
+            l.Titulo,
+            l.Autor,
+            l.Editora,
+            l.AnoPublicacao,
+            l.Genero,
+            l.ExemplaresDisponiveis,
+            l.IdCategoria,
+            Categoria = l.Categoria.Nome
+        })
+        .ToList();
 
             return Ok(livros);
         }
@@ -35,18 +39,22 @@ namespace Biblioteca.API.Controllers
         //GET api/livros/1
         public IHttpActionResult Get(int id)
         {
-            var livro = dc.Livros.Where(l => l.IdLivro == id).Select(l => new
+            var livro = dc.Livros
+            .Where(l => l.IdLivro == id)
+            .Select(l => new
             {
                 l.IdLivro,
+                l.CodigoLivro,
                 l.Titulo,
                 l.Autor,
+                l.Editora,
                 l.AnoPublicacao,
-                l.ISBN,
+                l.Genero,
+                l.ExemplaresDisponiveis,
                 l.IdCategoria,
-                Categoria = l.Categoria.Nome,
-                l.Disponivel
+                Categoria = l.Categoria.Nome
             })
-            .FirstOrDefault();
+        .FirstOrDefault();
 
             if (livro == null)
             {

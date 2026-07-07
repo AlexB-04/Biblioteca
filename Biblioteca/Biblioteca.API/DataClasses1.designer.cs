@@ -225,17 +225,21 @@ namespace Biblioteca.API
 		
 		private int _IdLivro;
 		
+		private string _CodigoLivro;
+		
 		private string _Titulo;
 		
 		private string _Autor;
 		
-		private System.Nullable<int> _AnoPublicacao;
+		private string _Editora;
 		
-		private string _ISBN;
+		private int _AnoPublicacao;
+		
+		private string _Genero;
+		
+		private int _ExemplaresDisponiveis;
 		
 		private int _IdCategoria;
-		
-		private bool _Disponivel;
 		
 		private EntityRef<Categoria> _Categoria;
 		
@@ -245,18 +249,22 @@ namespace Biblioteca.API
     partial void OnCreated();
     partial void OnIdLivroChanging(int value);
     partial void OnIdLivroChanged();
+    partial void OnCodigoLivroChanging(string value);
+    partial void OnCodigoLivroChanged();
     partial void OnTituloChanging(string value);
     partial void OnTituloChanged();
     partial void OnAutorChanging(string value);
     partial void OnAutorChanged();
-    partial void OnAnoPublicacaoChanging(System.Nullable<int> value);
+    partial void OnEditoraChanging(string value);
+    partial void OnEditoraChanged();
+    partial void OnAnoPublicacaoChanging(int value);
     partial void OnAnoPublicacaoChanged();
-    partial void OnISBNChanging(string value);
-    partial void OnISBNChanged();
+    partial void OnGeneroChanging(string value);
+    partial void OnGeneroChanged();
+    partial void OnExemplaresDisponiveisChanging(int value);
+    partial void OnExemplaresDisponiveisChanged();
     partial void OnIdCategoriaChanging(int value);
     partial void OnIdCategoriaChanged();
-    partial void OnDisponivelChanging(bool value);
-    partial void OnDisponivelChanged();
     #endregion
 		
 		public Livro()
@@ -281,6 +289,26 @@ namespace Biblioteca.API
 					this._IdLivro = value;
 					this.SendPropertyChanged("IdLivro");
 					this.OnIdLivroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CodigoLivro", DbType="NVarChar(20)")]
+		public string CodigoLivro
+		{
+			get
+			{
+				return this._CodigoLivro;
+			}
+			set
+			{
+				if ((this._CodigoLivro != value))
+				{
+					this.OnCodigoLivroChanging(value);
+					this.SendPropertyChanging();
+					this._CodigoLivro = value;
+					this.SendPropertyChanged("CodigoLivro");
+					this.OnCodigoLivroChanged();
 				}
 			}
 		}
@@ -325,8 +353,28 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnoPublicacao", DbType="Int")]
-		public System.Nullable<int> AnoPublicacao
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Editora", DbType="NVarChar(100)")]
+		public string Editora
+		{
+			get
+			{
+				return this._Editora;
+			}
+			set
+			{
+				if ((this._Editora != value))
+				{
+					this.OnEditoraChanging(value);
+					this.SendPropertyChanging();
+					this._Editora = value;
+					this.SendPropertyChanged("Editora");
+					this.OnEditoraChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnoPublicacao", DbType="Int NOT NULL")]
+		public int AnoPublicacao
 		{
 			get
 			{
@@ -345,22 +393,42 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ISBN", DbType="NVarChar(20)")]
-		public string ISBN
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Genero", DbType="NVarChar(50)")]
+		public string Genero
 		{
 			get
 			{
-				return this._ISBN;
+				return this._Genero;
 			}
 			set
 			{
-				if ((this._ISBN != value))
+				if ((this._Genero != value))
 				{
-					this.OnISBNChanging(value);
+					this.OnGeneroChanging(value);
 					this.SendPropertyChanging();
-					this._ISBN = value;
-					this.SendPropertyChanged("ISBN");
-					this.OnISBNChanged();
+					this._Genero = value;
+					this.SendPropertyChanged("Genero");
+					this.OnGeneroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExemplaresDisponiveis", DbType="Int NOT NULL")]
+		public int ExemplaresDisponiveis
+		{
+			get
+			{
+				return this._ExemplaresDisponiveis;
+			}
+			set
+			{
+				if ((this._ExemplaresDisponiveis != value))
+				{
+					this.OnExemplaresDisponiveisChanging(value);
+					this.SendPropertyChanging();
+					this._ExemplaresDisponiveis = value;
+					this.SendPropertyChanged("ExemplaresDisponiveis");
+					this.OnExemplaresDisponiveisChanged();
 				}
 			}
 		}
@@ -385,26 +453,6 @@ namespace Biblioteca.API
 					this._IdCategoria = value;
 					this.SendPropertyChanged("IdCategoria");
 					this.OnIdCategoriaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Disponivel", DbType="Bit NOT NULL")]
-		public bool Disponivel
-		{
-			get
-			{
-				return this._Disponivel;
-			}
-			set
-			{
-				if ((this._Disponivel != value))
-				{
-					this.OnDisponivelChanging(value);
-					this.SendPropertyChanging();
-					this._Disponivel = value;
-					this.SendPropertyChanged("Disponivel");
-					this.OnDisponivelChanged();
 				}
 			}
 		}
