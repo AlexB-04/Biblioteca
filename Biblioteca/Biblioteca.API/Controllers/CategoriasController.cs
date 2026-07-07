@@ -12,15 +12,32 @@ namespace Biblioteca.API.Controllers
             .ConnectionString);
 
         // GET api/categorias
-        public List<Categoria> Get()
+        public IHttpActionResult Get()
         {
-            return dc.Categorias.ToList();
+            var categorias = dc.Categorias
+                .Select(c => new
+                {
+                    c.IdCategoria,
+                    c.Nome,
+                    c.Descricao
+                })
+                .ToList();
+
+            return Ok(categorias);
         }
 
         // GET api/categorias/1
         public IHttpActionResult Get(int id)
         {
-            Categoria categoria = dc.Categorias.FirstOrDefault(c => c.IdCategoria == id);
+            var categoria = dc.Categorias
+                .Where(c => c.IdCategoria == id)
+                .Select(c => new
+                {
+                    c.IdCategoria,
+                    c.Nome,
+                    c.Descricao
+                })
+                .FirstOrDefault();
 
             if (categoria == null)
             {
