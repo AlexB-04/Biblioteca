@@ -36,6 +36,9 @@ namespace Biblioteca.API
     partial void InsertLivro(Livro instance);
     partial void UpdateLivro(Livro instance);
     partial void DeleteLivro(Livro instance);
+    partial void InsertUtilizadores(Utilizadores instance);
+    partial void UpdateUtilizadores(Utilizadores instance);
+    partial void DeleteUtilizadores(Utilizadores instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -75,6 +78,14 @@ namespace Biblioteca.API
 			get
 			{
 				return this.GetTable<Livro>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Utilizadores> Utilizadores
+		{
+			get
+			{
+				return this.GetTable<Utilizadores>();
 			}
 		}
 	}
@@ -487,6 +498,212 @@ namespace Biblioteca.API
 						this._IdCategoria = default(int);
 					}
 					this.SendPropertyChanged("Categoria");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Utilizadores")]
+	public partial class Utilizadores : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdUtilizador;
+		
+		private string _Nome;
+		
+		private string _Contacto;
+		
+		private string _Email;
+		
+		private string _TipoUtilizador;
+		
+		private int _LimiteEmprestimos;
+		
+		private int _Atrasos;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdUtilizadorChanging(int value);
+    partial void OnIdUtilizadorChanged();
+    partial void OnNomeChanging(string value);
+    partial void OnNomeChanged();
+    partial void OnContactoChanging(string value);
+    partial void OnContactoChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnTipoUtilizadorChanging(string value);
+    partial void OnTipoUtilizadorChanged();
+    partial void OnLimiteEmprestimosChanging(int value);
+    partial void OnLimiteEmprestimosChanged();
+    partial void OnAtrasosChanging(int value);
+    partial void OnAtrasosChanged();
+    #endregion
+		
+		public Utilizadores()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdUtilizador
+		{
+			get
+			{
+				return this._IdUtilizador;
+			}
+			set
+			{
+				if ((this._IdUtilizador != value))
+				{
+					this.OnIdUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._IdUtilizador = value;
+					this.SendPropertyChanged("IdUtilizador");
+					this.OnIdUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nome", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Nome
+		{
+			get
+			{
+				return this._Nome;
+			}
+			set
+			{
+				if ((this._Nome != value))
+				{
+					this.OnNomeChanging(value);
+					this.SendPropertyChanging();
+					this._Nome = value;
+					this.SendPropertyChanged("Nome");
+					this.OnNomeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contacto", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Contacto
+		{
+			get
+			{
+				return this._Contacto;
+			}
+			set
+			{
+				if ((this._Contacto != value))
+				{
+					this.OnContactoChanging(value);
+					this.SendPropertyChanging();
+					this._Contacto = value;
+					this.SendPropertyChanged("Contacto");
+					this.OnContactoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TipoUtilizador", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string TipoUtilizador
+		{
+			get
+			{
+				return this._TipoUtilizador;
+			}
+			set
+			{
+				if ((this._TipoUtilizador != value))
+				{
+					this.OnTipoUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._TipoUtilizador = value;
+					this.SendPropertyChanged("TipoUtilizador");
+					this.OnTipoUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LimiteEmprestimos", DbType="Int NOT NULL")]
+		public int LimiteEmprestimos
+		{
+			get
+			{
+				return this._LimiteEmprestimos;
+			}
+			set
+			{
+				if ((this._LimiteEmprestimos != value))
+				{
+					this.OnLimiteEmprestimosChanging(value);
+					this.SendPropertyChanging();
+					this._LimiteEmprestimos = value;
+					this.SendPropertyChanged("LimiteEmprestimos");
+					this.OnLimiteEmprestimosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Atrasos", DbType="Int NOT NULL")]
+		public int Atrasos
+		{
+			get
+			{
+				return this._Atrasos;
+			}
+			set
+			{
+				if ((this._Atrasos != value))
+				{
+					this.OnAtrasosChanging(value);
+					this.SendPropertyChanging();
+					this._Atrasos = value;
+					this.SendPropertyChanged("Atrasos");
+					this.OnAtrasosChanged();
 				}
 			}
 		}
