@@ -36,9 +36,9 @@ namespace Biblioteca.API
     partial void InsertLivro(Livro instance);
     partial void UpdateLivro(Livro instance);
     partial void DeleteLivro(Livro instance);
-    partial void InsertUtilizadores(Utilizadores instance);
-    partial void UpdateUtilizadores(Utilizadores instance);
-    partial void DeleteUtilizadores(Utilizadores instance);
+    partial void InsertUtilizador(Utilizador instance);
+    partial void UpdateUtilizador(Utilizador instance);
+    partial void DeleteUtilizador(Utilizador instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -81,11 +81,11 @@ namespace Biblioteca.API
 			}
 		}
 		
-		public System.Data.Linq.Table<Utilizadores> Utilizadores
+		public System.Data.Linq.Table<Utilizador> Utilizadors
 		{
 			get
 			{
-				return this.GetTable<Utilizadores>();
+				return this.GetTable<Utilizador>();
 			}
 		}
 	}
@@ -524,7 +524,7 @@ namespace Biblioteca.API
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Utilizadores")]
-	public partial class Utilizadores : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Utilizador : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -563,7 +563,7 @@ namespace Biblioteca.API
     partial void OnAtrasosChanged();
     #endregion
 		
-		public Utilizadores()
+		public Utilizador()
 		{
 			OnCreated();
 		}

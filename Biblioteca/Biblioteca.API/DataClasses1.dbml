@@ -21,8 +21,8 @@
       <Association Name="Categoria_Livro" Member="Categoria" ThisKey="IdCategoria" OtherKey="IdCategoria" Type="Categoria" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Utilizadores" Member="Utilizadores">
-    <Type Name="Utilizadores">
+  <Table Name="dbo.Utilizadores" Member="Utilizadors">
+    <Type Name="Utilizador">
       <Column Name="IdUtilizador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Nome" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Contacto" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
