@@ -18,6 +18,7 @@
       <Column Name="Genero" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="ExemplaresDisponiveis" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IdCategoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Livro_Emprestimo" Member="Emprestimos" ThisKey="IdLivro" OtherKey="IdLivro" Type="Emprestimo" />
       <Association Name="Categoria_Livro" Member="Categoria" ThisKey="IdCategoria" OtherKey="IdCategoria" Type="Categoria" IsForeignKey="true" />
     </Type>
   </Table>
@@ -30,6 +31,21 @@
       <Column Name="TipoUtilizador" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="LimiteEmprestimos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Atrasos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Utilizador_Emprestimo" Member="Emprestimos" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Emprestimo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Emprestimos" Member="Emprestimos">
+    <Type Name="Emprestimo">
+      <Column Name="IdEmprestimo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdUtilizador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdLivro" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataEmprestimo" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PrazoDevolucao" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DataDevolucao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Devolvido" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Multa" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Livro_Emprestimo" Member="Livro" ThisKey="IdLivro" OtherKey="IdLivro" Type="Livro" IsForeignKey="true" />
+      <Association Name="Utilizador_Emprestimo" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -39,6 +39,9 @@ namespace Biblioteca.API
     partial void InsertUtilizador(Utilizador instance);
     partial void UpdateUtilizador(Utilizador instance);
     partial void DeleteUtilizador(Utilizador instance);
+    partial void InsertEmprestimo(Emprestimo instance);
+    partial void UpdateEmprestimo(Emprestimo instance);
+    partial void DeleteEmprestimo(Emprestimo instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -86,6 +89,14 @@ namespace Biblioteca.API
 			get
 			{
 				return this.GetTable<Utilizador>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Emprestimo> Emprestimos
+		{
+			get
+			{
+				return this.GetTable<Emprestimo>();
 			}
 		}
 	}
@@ -252,6 +263,8 @@ namespace Biblioteca.API
 		
 		private int _IdCategoria;
 		
+		private EntitySet<Emprestimo> _Emprestimos;
+		
 		private EntityRef<Categoria> _Categoria;
 		
     #region Extensibility Method Definitions
@@ -280,6 +293,7 @@ namespace Biblioteca.API
 		
 		public Livro()
 		{
+			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
 			this._Categoria = default(EntityRef<Categoria>);
 			OnCreated();
 		}
@@ -468,6 +482,19 @@ namespace Biblioteca.API
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Livro_Emprestimo", Storage="_Emprestimos", ThisKey="IdLivro", OtherKey="IdLivro")]
+		public EntitySet<Emprestimo> Emprestimos
+		{
+			get
+			{
+				return this._Emprestimos;
+			}
+			set
+			{
+				this._Emprestimos.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Categoria_Livro", Storage="_Categoria", ThisKey="IdCategoria", OtherKey="IdCategoria", IsForeignKey=true)]
 		public Categoria Categoria
 		{
@@ -521,6 +548,18 @@ namespace Biblioteca.API
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Livro = this;
+		}
+		
+		private void detach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Livro = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Utilizadores")]
@@ -542,6 +581,8 @@ namespace Biblioteca.API
 		private int _LimiteEmprestimos;
 		
 		private int _Atrasos;
+		
+		private EntitySet<Emprestimo> _Emprestimos;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -565,6 +606,7 @@ namespace Biblioteca.API
 		
 		public Utilizador()
 		{
+			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
 			OnCreated();
 		}
 		
@@ -704,6 +746,343 @@ namespace Biblioteca.API
 					this._Atrasos = value;
 					this.SendPropertyChanged("Atrasos");
 					this.OnAtrasosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Emprestimo", Storage="_Emprestimos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Emprestimo> Emprestimos
+		{
+			get
+			{
+				return this._Emprestimos;
+			}
+			set
+			{
+				this._Emprestimos.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Emprestimos")]
+	public partial class Emprestimo : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdEmprestimo;
+		
+		private int _IdUtilizador;
+		
+		private int _IdLivro;
+		
+		private System.DateTime _DataEmprestimo;
+		
+		private System.DateTime _PrazoDevolucao;
+		
+		private System.Nullable<System.DateTime> _DataDevolucao;
+		
+		private bool _Devolvido;
+		
+		private decimal _Multa;
+		
+		private EntityRef<Livro> _Livro;
+		
+		private EntityRef<Utilizador> _Utilizador;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdEmprestimoChanging(int value);
+    partial void OnIdEmprestimoChanged();
+    partial void OnIdUtilizadorChanging(int value);
+    partial void OnIdUtilizadorChanged();
+    partial void OnIdLivroChanging(int value);
+    partial void OnIdLivroChanged();
+    partial void OnDataEmprestimoChanging(System.DateTime value);
+    partial void OnDataEmprestimoChanged();
+    partial void OnPrazoDevolucaoChanging(System.DateTime value);
+    partial void OnPrazoDevolucaoChanged();
+    partial void OnDataDevolucaoChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataDevolucaoChanged();
+    partial void OnDevolvidoChanging(bool value);
+    partial void OnDevolvidoChanged();
+    partial void OnMultaChanging(decimal value);
+    partial void OnMultaChanged();
+    #endregion
+		
+		public Emprestimo()
+		{
+			this._Livro = default(EntityRef<Livro>);
+			this._Utilizador = default(EntityRef<Utilizador>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdEmprestimo", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdEmprestimo
+		{
+			get
+			{
+				return this._IdEmprestimo;
+			}
+			set
+			{
+				if ((this._IdEmprestimo != value))
+				{
+					this.OnIdEmprestimoChanging(value);
+					this.SendPropertyChanging();
+					this._IdEmprestimo = value;
+					this.SendPropertyChanged("IdEmprestimo");
+					this.OnIdEmprestimoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", DbType="Int NOT NULL")]
+		public int IdUtilizador
+		{
+			get
+			{
+				return this._IdUtilizador;
+			}
+			set
+			{
+				if ((this._IdUtilizador != value))
+				{
+					if (this._Utilizador.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._IdUtilizador = value;
+					this.SendPropertyChanged("IdUtilizador");
+					this.OnIdUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdLivro", DbType="Int NOT NULL")]
+		public int IdLivro
+		{
+			get
+			{
+				return this._IdLivro;
+			}
+			set
+			{
+				if ((this._IdLivro != value))
+				{
+					if (this._Livro.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdLivroChanging(value);
+					this.SendPropertyChanging();
+					this._IdLivro = value;
+					this.SendPropertyChanged("IdLivro");
+					this.OnIdLivroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataEmprestimo", DbType="DateTime NOT NULL")]
+		public System.DateTime DataEmprestimo
+		{
+			get
+			{
+				return this._DataEmprestimo;
+			}
+			set
+			{
+				if ((this._DataEmprestimo != value))
+				{
+					this.OnDataEmprestimoChanging(value);
+					this.SendPropertyChanging();
+					this._DataEmprestimo = value;
+					this.SendPropertyChanged("DataEmprestimo");
+					this.OnDataEmprestimoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrazoDevolucao", DbType="DateTime NOT NULL")]
+		public System.DateTime PrazoDevolucao
+		{
+			get
+			{
+				return this._PrazoDevolucao;
+			}
+			set
+			{
+				if ((this._PrazoDevolucao != value))
+				{
+					this.OnPrazoDevolucaoChanging(value);
+					this.SendPropertyChanging();
+					this._PrazoDevolucao = value;
+					this.SendPropertyChanged("PrazoDevolucao");
+					this.OnPrazoDevolucaoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataDevolucao", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DataDevolucao
+		{
+			get
+			{
+				return this._DataDevolucao;
+			}
+			set
+			{
+				if ((this._DataDevolucao != value))
+				{
+					this.OnDataDevolucaoChanging(value);
+					this.SendPropertyChanging();
+					this._DataDevolucao = value;
+					this.SendPropertyChanged("DataDevolucao");
+					this.OnDataDevolucaoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Devolvido", DbType="Bit NOT NULL")]
+		public bool Devolvido
+		{
+			get
+			{
+				return this._Devolvido;
+			}
+			set
+			{
+				if ((this._Devolvido != value))
+				{
+					this.OnDevolvidoChanging(value);
+					this.SendPropertyChanging();
+					this._Devolvido = value;
+					this.SendPropertyChanged("Devolvido");
+					this.OnDevolvidoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Multa", DbType="Decimal(10,2) NOT NULL")]
+		public decimal Multa
+		{
+			get
+			{
+				return this._Multa;
+			}
+			set
+			{
+				if ((this._Multa != value))
+				{
+					this.OnMultaChanging(value);
+					this.SendPropertyChanging();
+					this._Multa = value;
+					this.SendPropertyChanged("Multa");
+					this.OnMultaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Livro_Emprestimo", Storage="_Livro", ThisKey="IdLivro", OtherKey="IdLivro", IsForeignKey=true)]
+		public Livro Livro
+		{
+			get
+			{
+				return this._Livro.Entity;
+			}
+			set
+			{
+				Livro previousValue = this._Livro.Entity;
+				if (((previousValue != value) 
+							|| (this._Livro.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Livro.Entity = null;
+						previousValue.Emprestimos.Remove(this);
+					}
+					this._Livro.Entity = value;
+					if ((value != null))
+					{
+						value.Emprestimos.Add(this);
+						this._IdLivro = value.IdLivro;
+					}
+					else
+					{
+						this._IdLivro = default(int);
+					}
+					this.SendPropertyChanged("Livro");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Emprestimo", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		public Utilizador Utilizador
+		{
+			get
+			{
+				return this._Utilizador.Entity;
+			}
+			set
+			{
+				Utilizador previousValue = this._Utilizador.Entity;
+				if (((previousValue != value) 
+							|| (this._Utilizador.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Utilizador.Entity = null;
+						previousValue.Emprestimos.Remove(this);
+					}
+					this._Utilizador.Entity = value;
+					if ((value != null))
+					{
+						value.Emprestimos.Add(this);
+						this._IdUtilizador = value.IdUtilizador;
+					}
+					else
+					{
+						this._IdUtilizador = default(int);
+					}
+					this.SendPropertyChanged("Utilizador");
 				}
 			}
 		}
