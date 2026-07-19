@@ -45,6 +45,9 @@ namespace Biblioteca.API
     partial void InsertReserva(Reserva instance);
     partial void UpdateReserva(Reserva instance);
     partial void DeleteReserva(Reserva instance);
+    partial void InsertPenalizacao(Penalizacao instance);
+    partial void UpdatePenalizacao(Penalizacao instance);
+    partial void DeletePenalizacao(Penalizacao instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -108,6 +111,14 @@ namespace Biblioteca.API
 			get
 			{
 				return this.GetTable<Reserva>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Penalizacao> Penalizacaos
+		{
+			get
+			{
+				return this.GetTable<Penalizacao>();
 			}
 		}
 	}
@@ -625,6 +636,8 @@ namespace Biblioteca.API
 		
 		private EntitySet<Reserva> _Reservas;
 		
+		private EntitySet<Penalizacao> _Penalizacaos;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -649,6 +662,7 @@ namespace Biblioteca.API
 		{
 			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
 			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
+			this._Penalizacaos = new EntitySet<Penalizacao>(new Action<Penalizacao>(this.attach_Penalizacaos), new Action<Penalizacao>(this.detach_Penalizacaos));
 			OnCreated();
 		}
 		
@@ -818,6 +832,19 @@ namespace Biblioteca.API
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoe", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Penalizacao> Penalizacaos
+		{
+			get
+			{
+				return this._Penalizacaos;
+			}
+			set
+			{
+				this._Penalizacaos.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -861,6 +888,18 @@ namespace Biblioteca.API
 			this.SendPropertyChanging();
 			entity.Utilizador = null;
 		}
+		
+		private void attach_Penalizacaos(Penalizacao entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Penalizacaos(Penalizacao entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Emprestimos")]
@@ -884,6 +923,8 @@ namespace Biblioteca.API
 		private bool _Devolvido;
 		
 		private decimal _Multa;
+		
+		private EntitySet<Penalizacao> _Penalizacaos;
 		
 		private EntityRef<Livro> _Livro;
 		
@@ -913,6 +954,7 @@ namespace Biblioteca.API
 		
 		public Emprestimo()
 		{
+			this._Penalizacaos = new EntitySet<Penalizacao>(new Action<Penalizacao>(this.attach_Penalizacaos), new Action<Penalizacao>(this.detach_Penalizacaos));
 			this._Livro = default(EntityRef<Livro>);
 			this._Utilizador = default(EntityRef<Utilizador>);
 			OnCreated();
@@ -1086,6 +1128,19 @@ namespace Biblioteca.API
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoe", Storage="_Penalizacaos", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo")]
+		public EntitySet<Penalizacao> Penalizacaos
+		{
+			get
+			{
+				return this._Penalizacaos;
+			}
+			set
+			{
+				this._Penalizacaos.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Livro_Emprestimo", Storage="_Livro", ThisKey="IdLivro", OtherKey="IdLivro", IsForeignKey=true)]
 		public Livro Livro
 		{
@@ -1172,6 +1227,18 @@ namespace Biblioteca.API
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Penalizacaos(Penalizacao entity)
+		{
+			this.SendPropertyChanging();
+			entity.Emprestimo = this;
+		}
+		
+		private void detach_Penalizacaos(Penalizacao entity)
+		{
+			this.SendPropertyChanging();
+			entity.Emprestimo = null;
 		}
 	}
 	
@@ -1407,6 +1474,342 @@ namespace Biblioteca.API
 					if ((value != null))
 					{
 						value.Reservas.Add(this);
+						this._IdUtilizador = value.IdUtilizador;
+					}
+					else
+					{
+						this._IdUtilizador = default(int);
+					}
+					this.SendPropertyChanged("Utilizador");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Penalizacoes")]
+	public partial class Penalizacao : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdPenalizacao;
+		
+		private int _IdUtilizador;
+		
+		private System.Nullable<int> _IdEmprestimo;
+		
+		private decimal _Valor;
+		
+		private int _DiasAtraso;
+		
+		private string _Motivo;
+		
+		private System.DateTime _DataPenalizacao;
+		
+		private bool _Pago;
+		
+		private System.Nullable<System.DateTime> _DataPagamento;
+		
+		private EntityRef<Emprestimo> _Emprestimo;
+		
+		private EntityRef<Utilizador> _Utilizador;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdPenalizacaoChanging(int value);
+    partial void OnIdPenalizacaoChanged();
+    partial void OnIdUtilizadorChanging(int value);
+    partial void OnIdUtilizadorChanged();
+    partial void OnIdEmprestimoChanging(System.Nullable<int> value);
+    partial void OnIdEmprestimoChanged();
+    partial void OnValorChanging(decimal value);
+    partial void OnValorChanged();
+    partial void OnDiasAtrasoChanging(int value);
+    partial void OnDiasAtrasoChanged();
+    partial void OnMotivoChanging(string value);
+    partial void OnMotivoChanged();
+    partial void OnDataPenalizacaoChanging(System.DateTime value);
+    partial void OnDataPenalizacaoChanged();
+    partial void OnPagoChanging(bool value);
+    partial void OnPagoChanged();
+    partial void OnDataPagamentoChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataPagamentoChanged();
+    #endregion
+		
+		public Penalizacao()
+		{
+			this._Emprestimo = default(EntityRef<Emprestimo>);
+			this._Utilizador = default(EntityRef<Utilizador>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdPenalizacao", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdPenalizacao
+		{
+			get
+			{
+				return this._IdPenalizacao;
+			}
+			set
+			{
+				if ((this._IdPenalizacao != value))
+				{
+					this.OnIdPenalizacaoChanging(value);
+					this.SendPropertyChanging();
+					this._IdPenalizacao = value;
+					this.SendPropertyChanged("IdPenalizacao");
+					this.OnIdPenalizacaoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", DbType="Int NOT NULL")]
+		public int IdUtilizador
+		{
+			get
+			{
+				return this._IdUtilizador;
+			}
+			set
+			{
+				if ((this._IdUtilizador != value))
+				{
+					if (this._Utilizador.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._IdUtilizador = value;
+					this.SendPropertyChanged("IdUtilizador");
+					this.OnIdUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdEmprestimo", DbType="Int")]
+		public System.Nullable<int> IdEmprestimo
+		{
+			get
+			{
+				return this._IdEmprestimo;
+			}
+			set
+			{
+				if ((this._IdEmprestimo != value))
+				{
+					if (this._Emprestimo.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdEmprestimoChanging(value);
+					this.SendPropertyChanging();
+					this._IdEmprestimo = value;
+					this.SendPropertyChanged("IdEmprestimo");
+					this.OnIdEmprestimoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Valor", DbType="Decimal(10,2) NOT NULL")]
+		public decimal Valor
+		{
+			get
+			{
+				return this._Valor;
+			}
+			set
+			{
+				if ((this._Valor != value))
+				{
+					this.OnValorChanging(value);
+					this.SendPropertyChanging();
+					this._Valor = value;
+					this.SendPropertyChanged("Valor");
+					this.OnValorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiasAtraso", DbType="Int NOT NULL")]
+		public int DiasAtraso
+		{
+			get
+			{
+				return this._DiasAtraso;
+			}
+			set
+			{
+				if ((this._DiasAtraso != value))
+				{
+					this.OnDiasAtrasoChanging(value);
+					this.SendPropertyChanging();
+					this._DiasAtraso = value;
+					this.SendPropertyChanged("DiasAtraso");
+					this.OnDiasAtrasoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motivo", DbType="NVarChar(150) NOT NULL", CanBeNull=false)]
+		public string Motivo
+		{
+			get
+			{
+				return this._Motivo;
+			}
+			set
+			{
+				if ((this._Motivo != value))
+				{
+					this.OnMotivoChanging(value);
+					this.SendPropertyChanging();
+					this._Motivo = value;
+					this.SendPropertyChanged("Motivo");
+					this.OnMotivoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataPenalizacao", DbType="DateTime NOT NULL")]
+		public System.DateTime DataPenalizacao
+		{
+			get
+			{
+				return this._DataPenalizacao;
+			}
+			set
+			{
+				if ((this._DataPenalizacao != value))
+				{
+					this.OnDataPenalizacaoChanging(value);
+					this.SendPropertyChanging();
+					this._DataPenalizacao = value;
+					this.SendPropertyChanged("DataPenalizacao");
+					this.OnDataPenalizacaoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pago", DbType="Bit NOT NULL")]
+		public bool Pago
+		{
+			get
+			{
+				return this._Pago;
+			}
+			set
+			{
+				if ((this._Pago != value))
+				{
+					this.OnPagoChanging(value);
+					this.SendPropertyChanging();
+					this._Pago = value;
+					this.SendPropertyChanged("Pago");
+					this.OnPagoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataPagamento", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DataPagamento
+		{
+			get
+			{
+				return this._DataPagamento;
+			}
+			set
+			{
+				if ((this._DataPagamento != value))
+				{
+					this.OnDataPagamentoChanging(value);
+					this.SendPropertyChanging();
+					this._DataPagamento = value;
+					this.SendPropertyChanged("DataPagamento");
+					this.OnDataPagamentoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoe", Storage="_Emprestimo", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo", IsForeignKey=true, DeleteRule="SET NULL")]
+		public Emprestimo Emprestimo
+		{
+			get
+			{
+				return this._Emprestimo.Entity;
+			}
+			set
+			{
+				Emprestimo previousValue = this._Emprestimo.Entity;
+				if (((previousValue != value) 
+							|| (this._Emprestimo.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Emprestimo.Entity = null;
+						previousValue.Penalizacaos.Remove(this);
+					}
+					this._Emprestimo.Entity = value;
+					if ((value != null))
+					{
+						value.Penalizacaos.Add(this);
+						this._IdEmprestimo = value.IdEmprestimo;
+					}
+					else
+					{
+						this._IdEmprestimo = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Emprestimo");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoe", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		public Utilizador Utilizador
+		{
+			get
+			{
+				return this._Utilizador.Entity;
+			}
+			set
+			{
+				Utilizador previousValue = this._Utilizador.Entity;
+				if (((previousValue != value) 
+							|| (this._Utilizador.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Utilizador.Entity = null;
+						previousValue.Penalizacaos.Remove(this);
+					}
+					this._Utilizador.Entity = value;
+					if ((value != null))
+					{
+						value.Penalizacaos.Add(this);
 						this._IdUtilizador = value.IdUtilizador;
 					}
 					else
