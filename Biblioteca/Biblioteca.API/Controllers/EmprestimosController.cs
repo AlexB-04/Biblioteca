@@ -73,11 +73,39 @@
                 return BadRequest("O utilizador indicado não existe.");
             }
 
+            bool temEmprestimoEmAtraso = dc.Emprestimos.Any(e =>
+                e.IdUtilizador == emprestimo.IdUtilizador &&
+                e.Devolvido == false &&
+                e.PrazoDevolucao < DateTime.Today);
+
+            if (temEmprestimoEmAtraso)
+            {
+                return BadRequest("O utilizador possui um empréstimo em atraso.");
+            }
+
+            bool temPenalizacaoNaoPaga = dc.Penalizacoes.Any(p => 
+                p.IdUtilizador == emprestimo.IdUtilizador && 
+                p.Pago == false);
+
+            if (temPenalizacaoNaoPaga)
+            {
+                return BadRequest("O utilizador possui uma penalização não paga.");
+            }
+
             Livro livro = dc.Livros.FirstOrDefault(l => l.IdLivro == emprestimo.IdLivro);
 
             if (livro == null)
             {
                 return BadRequest("O livro indicado não existe.");
+            }
+
+            Reserva primeiraReserva = dc.Reservas
+                .Where(r => r.IdLivro == livro.IdLivro && r.Ativa == true)
+                .OrderBy(r => r.Ordem).FirstOrDefault();
+
+            if (primeiraReserva != null && primeiraReserva.IdUtilizador != utilizador.IdUtilizador)
+            {
+                return BadRequest("Este livro está reservado para o primeiro utilizador da fila.");
             }
 
             if (livro.ExemplaresDisponiveis <= 0)
@@ -109,6 +137,23 @@
             emprestimo.DataDevolucao = null;
             emprestimo.Devolvido = false;
             emprestimo.Multa = 0;
+
+            if (primeiraReserva != null)
+            {
+                int ordemRemovida = primeiraReserva.Ordem;
+
+                primeiraReserva.Ativa = false;
+
+                var reservasSeguintes = dc.Reservas.Where(r =>
+                    r.IdLivro == livro.IdLivro &&
+                    r.Ativa == true &&
+                    r.Ordem > ordemRemovida).ToList();
+
+                foreach (Reserva reservaSeguinte in reservasSeguintes)
+                {
+                    reservaSeguinte.Ordem--;
+                }
+            }
 
             livro.ExemplaresDisponiveis--;
 
@@ -187,6 +232,25 @@
 
                 emprestimo.Multa = multa;
                 utilizador.Atrasos++;
+
+                bool penalizacaoJaExiste = dc.Penalizacoes.Any(p => p.IdEmprestimo == emprestimo.IdEmprestimo);
+
+                if (!penalizacaoJaExiste)
+                {
+                    Penalizacoes penalizacao = new Penalizacoes
+                    {
+                        IdUtilizador = utilizador.IdUtilizador,
+                        IdEmprestimo = emprestimo.IdEmprestimo,
+                        Valor = multa,
+                        DiasAtraso = diasAtraso,
+                        Motivo = $"Atraso de {diasAtraso} dia(s) na devolução do livro \"{livro.Titulo}\".",
+                        DataPenalizacao = DateTime.Now,
+                        Pago = false,
+                        DataPagamento = null
+                    };
+
+                    dc.Penalizacoes.InsertOnSubmit(penalizacao);
+                }
             }
 
             livro.ExemplaresDisponiveis++;

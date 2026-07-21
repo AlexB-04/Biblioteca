@@ -155,7 +155,21 @@
                 return BadRequest("O livro associado à reserva não existe.");
             }
 
+            int ordemCancelada = reserva.Ordem;
+
             reserva.Ativa = false;
+
+            var reservasSeguintes = dc.Reservas
+                .Where(r =>
+                    r.IdLivro == reserva.IdLivro &&
+                    r.Ativa == true &&
+                    r.Ordem > ordemCancelada)
+                .ToList();
+
+            foreach (Reserva reservaSeguinte in reservasSeguintes)
+            {
+                reservaSeguinte.Ordem--;
+            }
 
             dc.SubmitChanges();
 
