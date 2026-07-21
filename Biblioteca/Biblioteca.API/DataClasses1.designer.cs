@@ -45,9 +45,9 @@ namespace Biblioteca.API
     partial void InsertReserva(Reserva instance);
     partial void UpdateReserva(Reserva instance);
     partial void DeleteReserva(Reserva instance);
-    partial void InsertPenalizacao(Penalizacao instance);
-    partial void UpdatePenalizacao(Penalizacao instance);
-    partial void DeletePenalizacao(Penalizacao instance);
+    partial void InsertPenalizacoes(Penalizacoes instance);
+    partial void UpdatePenalizacoes(Penalizacoes instance);
+    partial void DeletePenalizacoes(Penalizacoes instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -114,11 +114,11 @@ namespace Biblioteca.API
 			}
 		}
 		
-		public System.Data.Linq.Table<Penalizacao> Penalizacaos
+		public System.Data.Linq.Table<Penalizacoes> Penalizacoes
 		{
 			get
 			{
-				return this.GetTable<Penalizacao>();
+				return this.GetTable<Penalizacoes>();
 			}
 		}
 	}
@@ -636,7 +636,7 @@ namespace Biblioteca.API
 		
 		private EntitySet<Reserva> _Reservas;
 		
-		private EntitySet<Penalizacao> _Penalizacaos;
+		private EntitySet<Penalizacoes> _Penalizacaos;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -662,7 +662,7 @@ namespace Biblioteca.API
 		{
 			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
 			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
-			this._Penalizacaos = new EntitySet<Penalizacao>(new Action<Penalizacao>(this.attach_Penalizacaos), new Action<Penalizacao>(this.detach_Penalizacaos));
+			this._Penalizacaos = new EntitySet<Penalizacoes>(new Action<Penalizacoes>(this.attach_Penalizacaos), new Action<Penalizacoes>(this.detach_Penalizacaos));
 			OnCreated();
 		}
 		
@@ -832,8 +832,8 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoe", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
-		public EntitySet<Penalizacao> Penalizacaos
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacao", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Penalizacoes> Penalizacoes
 		{
 			get
 			{
@@ -889,13 +889,13 @@ namespace Biblioteca.API
 			entity.Utilizador = null;
 		}
 		
-		private void attach_Penalizacaos(Penalizacao entity)
+		private void attach_Penalizacaos(Penalizacoes entity)
 		{
 			this.SendPropertyChanging();
 			entity.Utilizador = this;
 		}
 		
-		private void detach_Penalizacaos(Penalizacao entity)
+		private void detach_Penalizacaos(Penalizacoes entity)
 		{
 			this.SendPropertyChanging();
 			entity.Utilizador = null;
@@ -924,7 +924,7 @@ namespace Biblioteca.API
 		
 		private decimal _Multa;
 		
-		private EntitySet<Penalizacao> _Penalizacaos;
+		private EntitySet<Penalizacoes> _Penalizacaos;
 		
 		private EntityRef<Livro> _Livro;
 		
@@ -954,7 +954,7 @@ namespace Biblioteca.API
 		
 		public Emprestimo()
 		{
-			this._Penalizacaos = new EntitySet<Penalizacao>(new Action<Penalizacao>(this.attach_Penalizacaos), new Action<Penalizacao>(this.detach_Penalizacaos));
+			this._Penalizacaos = new EntitySet<Penalizacoes>(new Action<Penalizacoes>(this.attach_Penalizacaos), new Action<Penalizacoes>(this.detach_Penalizacaos));
 			this._Livro = default(EntityRef<Livro>);
 			this._Utilizador = default(EntityRef<Utilizador>);
 			OnCreated();
@@ -1128,8 +1128,8 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoe", Storage="_Penalizacaos", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo")]
-		public EntitySet<Penalizacao> Penalizacaos
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacao", Storage="_Penalizacaos", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo")]
+		public EntitySet<Penalizacoes> Penalizacoes
 		{
 			get
 			{
@@ -1229,13 +1229,13 @@ namespace Biblioteca.API
 			}
 		}
 		
-		private void attach_Penalizacaos(Penalizacao entity)
+		private void attach_Penalizacaos(Penalizacoes entity)
 		{
 			this.SendPropertyChanging();
 			entity.Emprestimo = this;
 		}
 		
-		private void detach_Penalizacaos(Penalizacao entity)
+		private void detach_Penalizacaos(Penalizacoes entity)
 		{
 			this.SendPropertyChanging();
 			entity.Emprestimo = null;
@@ -1507,7 +1507,7 @@ namespace Biblioteca.API
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Penalizacoes")]
-	public partial class Penalizacao : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Penalizacoes : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1558,7 +1558,7 @@ namespace Biblioteca.API
     partial void OnDataPagamentoChanged();
     #endregion
 		
-		public Penalizacao()
+		public Penalizacoes()
 		{
 			this._Emprestimo = default(EntityRef<Emprestimo>);
 			this._Utilizador = default(EntityRef<Utilizador>);
@@ -1753,7 +1753,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoe", Storage="_Emprestimo", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo", IsForeignKey=true, DeleteRule="SET NULL")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacao", Storage="_Emprestimo", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo", IsForeignKey=true, DeleteRule="SET NULL")]
 		public Emprestimo Emprestimo
 		{
 			get
@@ -1770,12 +1770,12 @@ namespace Biblioteca.API
 					if ((previousValue != null))
 					{
 						this._Emprestimo.Entity = null;
-						previousValue.Penalizacaos.Remove(this);
+						previousValue.Penalizacoes.Remove(this);
 					}
 					this._Emprestimo.Entity = value;
 					if ((value != null))
 					{
-						value.Penalizacaos.Add(this);
+						value.Penalizacoes.Add(this);
 						this._IdEmprestimo = value.IdEmprestimo;
 					}
 					else
@@ -1787,7 +1787,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoe", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacao", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
 		public Utilizador Utilizador
 		{
 			get
@@ -1804,12 +1804,12 @@ namespace Biblioteca.API
 					if ((previousValue != null))
 					{
 						this._Utilizador.Entity = null;
-						previousValue.Penalizacaos.Remove(this);
+						previousValue.Penalizacoes.Remove(this);
 					}
 					this._Utilizador.Entity = value;
 					if ((value != null))
 					{
-						value.Penalizacaos.Add(this);
+						value.Penalizacoes.Add(this);
 						this._IdUtilizador = value.IdUtilizador;
 					}
 					else

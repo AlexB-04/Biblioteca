@@ -14,7 +14,7 @@
         <elementListCompartment Id="9aa57bdd-243a-49d0-a733-60b632d82dde" absoluteBounds="0.51500000000000012, 3.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.5 : 1.8862939453125); (1.5 : 2.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.5 : 1.8862939453125); (1.5 : 2.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Categoria/Categoria_Livro" />
       <nodes>
         <classShapeMoniker Id="bfb9547b-190f-476c-9959-3d88d48d0afd" />
@@ -33,14 +33,14 @@
         <elementListCompartment Id="669396a5-b909-45e1-a9e0-d4f4c4356487" absoluteBounds="3.7650000000000006, 3.335, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 4.04890055338542); (3.75 : 4.04890055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.5 : 4.04890055338542); (3.75 : 4.04890055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Livro/Livro_Emprestimo" />
       <nodes>
         <classShapeMoniker Id="b66477c2-b301-43a1-b647-4cdd381cd3d0" />
         <classShapeMoniker Id="872bd363-1593-4680-9687-f89c801758cb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.625 : 4.92390055338542); (5.75 : 4.92390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 4.92390055338542); (5.75 : 4.92390055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Utilizador/Utilizador_Emprestimo" />
       <nodes>
         <classShapeMoniker Id="1ee3bf44-8cd5-4378-bc16-57512bd9ed3c" />
@@ -53,14 +53,14 @@
         <elementListCompartment Id="0d967cae-7d2f-4c91-96ca-d98bedb4637f" absoluteBounds="3.7650000000000006, 7.085, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.5 : 5.2901025390625); (1.5 : 7.60659912109375); (3.75 : 7.60659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.5 : 5.2901025390625); (1.5 : 7.60659912109375); (3.75 : 7.60659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Livro/Livro_Reserva" />
       <nodes>
         <classShapeMoniker Id="b66477c2-b301-43a1-b647-4cdd381cd3d0" />
         <classShapeMoniker Id="5ca6b7e3-9055-4a29-b25d-dc108a91291f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.75 : 6.78049967447917); (7.75 : 7.68434945833333); (5.75 : 7.68434945833333)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.75 : 6.78049967447917); (7.75 : 7.68434945833333); (5.75 : 7.68434945833333)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Utilizador/Utilizador_Reserva" />
       <nodes>
         <classShapeMoniker Id="1ee3bf44-8cd5-4378-bc16-57512bd9ed3c" />
@@ -68,20 +68,20 @@
       </nodes>
     </associationConnector>
     <classShape Id="8d25034e-4a85-43b7-938b-7f0ceaf2271b" absoluteBounds="6.875, 0.5, 2, 2.5401025390625">
-      <DataClassMoniker Name="/DataClasses1DataContext/Penalizacao" />
+      <DataClassMoniker Name="/DataClasses1DataContext/Penalizacoes" />
       <nestedChildShapes>
         <elementListCompartment Id="bc16ff13-a534-43aa-bdf3-22fc3e15d453" absoluteBounds="6.89, 0.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <associationConnector edgePoints="[(4.75 : 2.875); (4.75 : 1.6874995); (6.875 : 1.6874995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Emprestimo/Emprestimo_Penalizacoe" />
+      <AssociationMoniker Name="/DataClasses1DataContext/Emprestimo/Emprestimo_Penalizacao" />
       <nodes>
         <classShapeMoniker Id="872bd363-1593-4680-9687-f89c801758cb" />
         <classShapeMoniker Id="8d25034e-4a85-43b7-938b-7f0ceaf2271b" />
       </nodes>
     </associationConnector>
     <associationConnector edgePoints="[(7.875 : 4.625); (7.875 : 3.0401025390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Utilizador/Utilizador_Penalizacoe" />
+      <AssociationMoniker Name="/DataClasses1DataContext/Utilizador/Utilizador_Penalizacao" />
       <nodes>
         <classShapeMoniker Id="1ee3bf44-8cd5-4378-bc16-57512bd9ed3c" />
         <classShapeMoniker Id="8d25034e-4a85-43b7-938b-7f0ceaf2271b" />
