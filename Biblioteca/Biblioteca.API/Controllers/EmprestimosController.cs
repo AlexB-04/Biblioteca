@@ -287,6 +287,13 @@
                 return BadRequest("Não é possível eliminar um empréstimo ativo. Devolva o livro primeiro.");
             }
 
+            bool possuiPenalizacao = dc.Penalizacoes.Any(p => p.IdEmprestimo == id);
+
+            if (possuiPenalizacao)
+            {
+                return BadRequest("Não é possível eliminar um empréstimo com penalizações associadas.");
+            }
+
             dc.Emprestimos.DeleteOnSubmit(emprestimo);
             dc.SubmitChanges();
 

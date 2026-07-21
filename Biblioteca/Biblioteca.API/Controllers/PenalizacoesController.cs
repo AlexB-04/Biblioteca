@@ -101,11 +101,11 @@
                     return BadRequest("O empréstimo não pertence ao utilizador indicado.");
                 }
 
-                bool penalizacaoExistente = dc.Penalizacoes.Any(p =>p.IdEmprestimo == penalizacao.IdEmprestimo && p.Pago == false);
+                bool penalizacaoExistente = dc.Penalizacoes.Any(p => p.IdEmprestimo == penalizacao.IdEmprestimo);
 
                 if (penalizacaoExistente)
                 {
-                    return BadRequest("Este empréstimo já possui uma penalização não paga.");
+                    return BadRequest("Este empréstimo já possui uma penalização.");
                 }
             }
 
