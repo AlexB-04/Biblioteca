@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Biblioteca.API/Biblioteca.API.csproj" Id="0bd3011c-a982-4bf1-b8f4-9e8164a90430" />
+  <Project Path="Biblioteca.Cliente.WPF/Biblioteca.Cliente.WPF.csproj" Id="42aaf3c2-0309-4170-9ffe-1f5f27322cc0" />
 </Solution>
