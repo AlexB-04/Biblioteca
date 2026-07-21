@@ -58,7 +58,6 @@
         }
 
         //POST api/livros
-
         public IHttpActionResult Post([FromBody] Livro livro)
         {
             if (livro == null)
@@ -117,7 +116,7 @@
             });
         }
 
-        //PUT api/livros/1
+        // PUT api/livros/1
         public IHttpActionResult Put(int id, [FromBody] Livro livro)
         {
             if (livro == null)
@@ -134,7 +133,7 @@
             {
                 return BadRequest("O autor do livro é obrigatório.");
             }
-            
+
             if (livro.AnoPublicacao <= 0)
             {
                 return BadRequest("O ano de publicação é inválido.");
@@ -145,18 +144,29 @@
                 return BadRequest("O número de exemplares disponíveis não pode ser negativo.");
             }
 
-            Categoria categoria = dc.Categorias.FirstOrDefault(c => c.IdCategoria == livro.IdCategoria);
-
-            if (categoria == null)
-            {
-                return BadRequest("A categoria indicada não existe.");
-            }
-
             Livro livroExistente = dc.Livros.FirstOrDefault(l => l.IdLivro == id);
 
             if (livroExistente == null)
             {
                 return NotFound();
+            }
+
+            bool livroJaExiste = dc.Livros.Any(l =>
+                l.Titulo == livro.Titulo &&
+                l.Autor == livro.Autor &&
+                l.IdLivro != id);
+
+            if (livroJaExiste)
+            {
+                return BadRequest("Já existe outro livro com esse título e autor.");
+            }
+
+            Categoria categoria = dc.Categorias
+                .FirstOrDefault(c => c.IdCategoria == livro.IdCategoria);
+
+            if (categoria == null)
+            {
+                return BadRequest("A categoria indicada não existe.");
             }
 
             livroExistente.Titulo = livro.Titulo;
@@ -183,14 +193,29 @@
             });
         }
 
-        //DELETE api/livros/1
+        // DELETE api/livros/1
         public IHttpActionResult Delete(int id)
         {
-            Livro livro = dc.Livros.FirstOrDefault(l => l.IdLivro == id);
+            Livro livro = dc.Livros
+                .FirstOrDefault(l => l.IdLivro == id);
 
             if (livro == null)
             {
                 return NotFound();
+            }
+
+            bool possuiEmprestimos = dc.Emprestimos.Any(e => e.IdLivro == id);
+
+            if (possuiEmprestimos)
+            {
+                return BadRequest("Não é possível eliminar um livro com histórico de empréstimos.");
+            }
+
+            bool possuiReservas = dc.Reservas.Any(r => r.IdLivro == id);
+
+            if (possuiReservas)
+            {
+                return BadRequest("Não é possível eliminar um livro com histórico de reservas.");
             }
 
             dc.Livros.DeleteOnSubmit(livro);
