@@ -189,6 +189,27 @@
                 return NotFound();
             }
 
+            bool possuiEmprestimos = dc.Emprestimos.Any(e =>e.IdUtilizador == id);
+
+            if (possuiEmprestimos)
+            {
+                return BadRequest("Não é possível eliminar um utilizador com histórico de empréstimos.");
+            }
+
+            bool possuiReservas = dc.Reservas.Any(r => r.IdUtilizador == id);
+
+            if (possuiReservas)
+            {
+                return BadRequest("Não é possível eliminar um utilizador com histórico de reservas.");
+            }
+
+            bool possuiPenalizacoes = dc.Penalizacoes.Any(p => p.IdUtilizador == id);
+
+            if (possuiPenalizacoes)
+            {
+                return BadRequest("Não é possível eliminar um utilizador com penalizações associadas.");
+            }
+
             dc.Utilizadors.DeleteOnSubmit(utilizador);
             dc.SubmitChanges();
 
