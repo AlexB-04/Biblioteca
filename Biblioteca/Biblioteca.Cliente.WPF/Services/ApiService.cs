@@ -28,7 +28,6 @@
 
             return result;
         }
-
         public async Task<Response> GetCategorias(string urlBase, string controller)
         {
             try
@@ -109,7 +108,6 @@
                 };
             }
         }
-
         public async Task<Response> PutCategoria(string urlBase, string controller, Categoria categoria)
         {
             try
@@ -152,7 +150,6 @@
                 };
             }
         }
-
         public async Task<Response> DeleteCategoria(string urlBase, string controller, int id)
         {
             try
@@ -178,6 +175,166 @@
                 {
                     IsSuccess = true,
                     Message = ObterMensagemErro(result)
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> GetLivros(string urlBase, string controller)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.GetAsync(controller);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var livros = JsonConvert.DeserializeObject<List<Livro>>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = livros
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> PostLivro(string urlBase, string controller, Livro livro)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                string json = JsonConvert.SerializeObject(livro);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(controller, content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var livroCriado = JsonConvert.DeserializeObject<Livro>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = livroCriado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> PutLivro(string urlBase, string controller, Livro livro)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                string json = JsonConvert.SerializeObject(livro);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync($"{controller}/{livro.IdLivro}", content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var livroAlterado = JsonConvert.DeserializeObject<Livro>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = livroAlterado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> DeleteLivro(string urlBase, string controller, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.DeleteAsync($"{controller}/{id}");
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = result
                 };
             }
             catch (Exception ex)

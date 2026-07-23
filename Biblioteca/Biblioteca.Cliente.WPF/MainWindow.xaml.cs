@@ -1,170 +1,25 @@
-﻿using Biblioteca.Cliente.WPF.Models;
-using Biblioteca.Cliente.WPF.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Biblioteca.Cliente.WPF.Views;
 using System.Windows;
 
 namespace Biblioteca.Cliente.WPF
 {
     public partial class MainWindow : Window
     {
-        private readonly ApiService apiService = new ApiService();
-        private Categoria categoriaSelecionada;
-
         public MainWindow()
         {
             InitializeComponent();
-        }
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            await CarregarCategoriasAsync();
+
+            conteudoPrincipal.Content = new CategoriasView();
         }
 
-        private async Task CarregarCategoriasAsync()
+        private void btnCategorias_Click(object sender, RoutedEventArgs e)
         {
-            btnAtualizarCategorias.IsEnabled = false;
-
-            Response response = await apiService.GetCategorias("http://localhost:56363/", "api/categorias");
-
-            if (!response.IsSuccess)
-            {
-                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                btnAtualizarCategorias.IsEnabled = true;
-                return;
-            }
-
-            List<Categoria> categorias = (List<Categoria>)response.Result;
-
-            dgCategorias.ItemsSource = categorias;
-
-            btnAtualizarCategorias.IsEnabled = true;
+            conteudoPrincipal.Content = new CategoriasView();
         }
 
-        private void LimparFormulario()
+        private void btnLivros_Click(object sender, RoutedEventArgs e)
         {
-            txtNome.Clear();
-            txtDescricao.Clear();
-
-            categoriaSelecionada = null;
-            dgCategorias.SelectedItem = null;
-        }
-
-        private void dgCategorias_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            categoriaSelecionada = dgCategorias.SelectedItem as Categoria;
-
-            if (categoriaSelecionada == null)
-            {
-                return;
-            }
-
-            txtNome.Text = categoriaSelecionada.Nome;
-            txtDescricao.Text = categoriaSelecionada.Descricao;
-        }
-
-        private async void btnAtualizarCategorias_Click(object sender, RoutedEventArgs e)
-        {
-            await CarregarCategoriasAsync();
-        }
-
-        private async void btnGuardarCategoria_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtNome.Text))
-            {
-                MessageBox.Show("O nome da categoria é obrigatório.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                return;
-            }
-
-            Categoria categoria = new Categoria
-            {
-                Nome = txtNome.Text,
-                Descricao = txtDescricao.Text
-            };
-
-            Response response = await apiService.PostCategoria("http://localhost:56363/", "api/categorias", categoria);
-
-            if (!response.IsSuccess)
-            {
-                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                return;
-            }
-
-            MessageBox.Show("Categoria criada com sucesso.");
-
-            LimparFormulario();
-
-            await CarregarCategoriasAsync();
-        }
-
-        private async void btnAlterarCategoria_Click(object sender, RoutedEventArgs e)
-        {
-            if (categoriaSelecionada == null)
-            {
-                MessageBox.Show("Selecione uma categoria para alterar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtNome.Text))
-            {
-                MessageBox.Show("O nome da categoria é obrigatório.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                return;
-            }
-
-            categoriaSelecionada.Nome = txtNome.Text;
-            categoriaSelecionada.Descricao = txtDescricao.Text;
-
-            Response response =
-                await apiService.PutCategoria("http://localhost:56363/", "api/categorias", categoriaSelecionada);
-
-            if (!response.IsSuccess)
-            {
-                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                return;
-            }
-
-            MessageBox.Show("Categoria alterada com sucesso.");
-
-            LimparFormulario();
-
-            await CarregarCategoriasAsync();
-        }
-
-        private async void btnEliminarCategoria_Click(object sender, RoutedEventArgs e)
-        {
-            if (categoriaSelecionada == null)
-            {
-                MessageBox.Show("Selecione uma categoria para eliminar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                return;
-            }
-
-            MessageBoxResult confirmacao = MessageBox.Show( $"Tem a certeza que pretende eliminar a categoria \"{categoriaSelecionada.Nome}\"?", "Confirmar eliminação", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (confirmacao != MessageBoxResult.Yes)
-            {
-                return;
-            }
-
-            Response response = await apiService.DeleteCategoria("http://localhost:56363/", "api/categorias", categoriaSelecionada.IdCategoria);
-
-            if (!response.IsSuccess)
-            {
-                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                return;
-            }
-
-            MessageBox.Show("Categoria eliminada com sucesso.");
-
-            LimparFormulario();
-
-            await CarregarCategoriasAsync();
+            conteudoPrincipal.Content = new LivrosView();
         }
     }
 }
