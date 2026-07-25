@@ -74,13 +74,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(categoria);
+                var json = JsonConvert.SerializeObject(categoria);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(controller, content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -116,13 +116,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(categoria);
+                var json = JsonConvert.SerializeObject(categoria);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PutAsync($"{controller}/{categoria.IdCategoria}", content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -160,7 +160,7 @@
 
                 var response = await client.DeleteAsync($"{controller}/{id}");
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -197,7 +197,7 @@
 
                 var response = await client.GetAsync(controller);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -233,13 +233,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(livro);
+                var json = JsonConvert.SerializeObject(livro);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(controller, content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -275,13 +275,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(livro);
+                var json = JsonConvert.SerializeObject(livro);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PutAsync($"{controller}/{livro.IdLivro}", content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -320,7 +320,7 @@
 
                 var response = await client.DeleteAsync($"{controller}/{id}");
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -357,7 +357,7 @@
 
                 var response = await client.GetAsync(controller);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -394,13 +394,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(utilizador);
+                var json = JsonConvert.SerializeObject(utilizador);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(controller, content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -436,13 +436,13 @@
 
                 client.BaseAddress = new Uri(urlBase);
 
-                string json = JsonConvert.SerializeObject(utilizador);
+                var json = JsonConvert.SerializeObject(utilizador);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PutAsync($"{controller}/{utilizador.IdUtilizador}", content);
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -480,7 +480,169 @@
 
                 var response = await client.DeleteAsync($"{controller}/{id}");
 
-                string result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> GetEmprestimos(string urlBase, string controller)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.GetAsync(controller);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var emprestimos = JsonConvert.DeserializeObject<List<Emprestimo>>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = emprestimos
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> PostEmprestimo(string urlBase, string controller, Emprestimo emprestimo)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var dadosEmprestimo = new
+                {
+                    emprestimo.IdUtilizador,
+                    emprestimo.IdLivro
+                };
+
+                var json = JsonConvert.SerializeObject(dadosEmprestimo);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(controller, content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var emprestimoCriado = JsonConvert.DeserializeObject<Emprestimo>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = emprestimoCriado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> PutEmprestimo(string urlBase, string controller, Emprestimo emprestimo)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var content = new StringContent("");
+
+                var response = await client.PutAsync($"{controller}/{emprestimo.IdEmprestimo}", content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var emprestimoAlterado = JsonConvert.DeserializeObject<Emprestimo>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = emprestimoAlterado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> DeleteEmprestimo(string urlBase, string controller, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.DeleteAsync($"{controller}/{id}");
+
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
