@@ -67,6 +67,11 @@
                 return BadRequest("O nome do utilizador é obrigatório.");
             }
 
+            if (string.IsNullOrWhiteSpace(utilizador.Contacto))
+            {
+                return BadRequest("O contacto do utilizador é obrigatório.");
+            }
+
             if (string.IsNullOrWhiteSpace(utilizador.Email))
             {
                 return BadRequest("O email do utilizador é obrigatório.");
@@ -120,6 +125,11 @@
             if (string.IsNullOrWhiteSpace(utilizador.Nome))
             {
                 return BadRequest("O nome do utilizador é obrigatório.");
+            }
+
+            if (string.IsNullOrWhiteSpace(utilizador.Contacto))
+            {
+                return BadRequest("O contacto do utilizador é obrigatório.");
             }
 
             if (string.IsNullOrWhiteSpace(utilizador.Email))
@@ -189,7 +199,7 @@
                 return NotFound();
             }
 
-            bool possuiEmprestimos = dc.Emprestimos.Any(e =>e.IdUtilizador == id);
+            bool possuiEmprestimos = dc.Emprestimos.Any(e => e.IdUtilizador == id);
 
             if (possuiEmprestimos)
             {

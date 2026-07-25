@@ -21,5 +21,10 @@ namespace Biblioteca.Cliente.WPF
         {
             conteudoPrincipal.Content = new LivrosView();
         }
+
+        private void btnUtilizadores_Click(object sender, RoutedEventArgs e)
+        {
+            conteudoPrincipal.Content = new UtilizadoresView();
+        }
     }
 }

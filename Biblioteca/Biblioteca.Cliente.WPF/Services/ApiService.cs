@@ -346,5 +346,165 @@
                 };
             }
         }
+
+        public async Task<Response> GetUtilizadores(string urlBase, string controller)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.GetAsync(controller);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var utilizadores = JsonConvert.DeserializeObject<List<Utilizador>>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = utilizadores
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> PostUtilizador(string urlBase, string controller, Utilizador utilizador)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                string json = JsonConvert.SerializeObject(utilizador);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(controller, content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var utilizadorCriado = JsonConvert.DeserializeObject<Utilizador>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = utilizadorCriado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> PutUtilizador(string urlBase, string controller, Utilizador utilizador)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                string json = JsonConvert.SerializeObject(utilizador);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync($"{controller}/{utilizador.IdUtilizador}", content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var utilizadorAlterado = JsonConvert.DeserializeObject<Utilizador>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = utilizadorAlterado
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> DeleteUtilizador(string urlBase, string controller, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.DeleteAsync($"{controller}/{id}");
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
     }
 }

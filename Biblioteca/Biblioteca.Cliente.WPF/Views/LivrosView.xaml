@@ -16,7 +16,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Botões -->
         <StackPanel Orientation="Horizontal">
 
             <Button x:Name="btnAtualizarLivros" Content="Atualizar" Width="180" Height="35" Click="btnAtualizarLivros_Click"/>
@@ -28,8 +27,7 @@
             <Button x:Name="btnEliminarLivro" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarLivro_Click"/>
 
         </StackPanel>
-
-        <!-- Formulário -->
+        
         <Grid Grid.Row="1" Margin="0,10,0,0">
 
             <Grid.ColumnDefinitions>
@@ -68,8 +66,7 @@
             <ComboBox x:Name="cmbCategoria" Grid.Row="3" Grid.Column="1" Height="28" Margin="5" DisplayMemberPath="Nome" SelectedValuePath="IdCategoria"/>
 
         </Grid>
-
-        <!-- Lista -->
+        
         <DataGrid x:Name="dgLivros" Grid.Row="2" Margin="0,10,0,0" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="dgLivros_SelectionChanged"/>
 
     </Grid>
