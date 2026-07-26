@@ -668,5 +668,170 @@
                 };
             }
         }
+
+        public async Task<Response> GetReservas(string urlBase, string controller)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.GetAsync(controller);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var reservas = JsonConvert.DeserializeObject<List<Reserva>>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = reservas
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> PostReserva(string urlBase, string controller, Reserva reserva)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var dadosReserva = new
+                {
+                    reserva.IdUtilizador,
+                    reserva.IdLivro
+                };
+
+                var json = JsonConvert.SerializeObject(dadosReserva);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(controller, content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var reservaCriada = JsonConvert.DeserializeObject<Reserva>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = reservaCriada
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> PutReserva(string urlBase, string controller, Reserva reserva)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var content = new StringContent("");
+
+                var response = await client.PutAsync($"{controller}/{reserva.IdReserva}", content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var reservaAlterada = JsonConvert.DeserializeObject<Reserva>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = reservaAlterada
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> DeleteReserva(string urlBase, string controller, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.DeleteAsync($"{controller}/{id}");
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
     }
 }
