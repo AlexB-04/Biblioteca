@@ -31,5 +31,10 @@ namespace Biblioteca.Cliente.WPF
         {
             conteudoPrincipal.Content = new EmprestimosView();
         }
+
+        private void btnReservas_Click(object sender, RoutedEventArgs e)
+        {
+            conteudoPrincipal.Content = new ReservasView();
+        }
     }
 }

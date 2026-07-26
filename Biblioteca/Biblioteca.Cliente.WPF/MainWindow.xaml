@@ -27,7 +27,7 @@
 
                 <Button Content="Empréstimos" Height="45" Margin="10,5" Click="btnEmprestimos_Click"/>
 
-                <Button Content="Reservas" Height="45" Margin="10,5" IsEnabled="False"/>
+                <Button Content="Reservas" Height="45" Margin="10,5" Click="btnReservas_Click"/>
 
                 <Button Content="Penalizações" Height="45" Margin="10,5" IsEnabled="False"/>
 
