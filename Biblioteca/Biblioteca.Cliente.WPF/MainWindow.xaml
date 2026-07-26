@@ -25,7 +25,7 @@
 
                 <Button Content="Utilizadores" Height="45" Margin="10,5" Click="btnUtilizadores_Click"/>
 
-                <Button Content="Empréstimos" Height="45" Margin="10,5" IsEnabled="False"/>
+                <Button Content="Empréstimos" Height="45" Margin="10,5" Click="btnEmprestimos_Click"/>
 
                 <Button Content="Reservas" Height="45" Margin="10,5" IsEnabled="False"/>
 

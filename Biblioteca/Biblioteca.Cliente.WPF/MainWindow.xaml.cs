@@ -26,5 +26,10 @@ namespace Biblioteca.Cliente.WPF
         {
             conteudoPrincipal.Content = new UtilizadoresView();
         }
+
+        private void btnEmprestimos_Click(object sender, RoutedEventArgs e)
+        {
+            conteudoPrincipal.Content = new EmprestimosView();
+        }
     }
 }
