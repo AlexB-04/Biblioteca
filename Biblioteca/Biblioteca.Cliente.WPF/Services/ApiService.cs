@@ -833,5 +833,176 @@
                 };
             }
         }
+
+        public async Task<Response> GetPenalizacoes(string urlBase, string controller)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.GetAsync(controller);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var penalizacoes = JsonConvert.DeserializeObject<List<Penalizacao>>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = penalizacoes
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> PostPenalizacao(string urlBase, string controller, Penalizacao penalizacao)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var dadosPenalizacao = new
+                {
+                    penalizacao.IdUtilizador,
+                    penalizacao.IdEmprestimo,
+                    penalizacao.DiasAtraso,
+                    penalizacao.Motivo
+                };
+
+                var json = JsonConvert.SerializeObject(dadosPenalizacao);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(controller, content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var penalizacaoCriada = JsonConvert.DeserializeObject<Penalizacao>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = penalizacaoCriada
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> PutPenalizacao(string urlBase, string controller, Penalizacao penalizacao)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var content = new StringContent("");
+
+                var response = await client.PutAsync(
+                    $"{controller}/{penalizacao.IdPenalizacao}",
+                    content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                var penalizacaoAlterada =
+                    JsonConvert.DeserializeObject<Penalizacao>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = penalizacaoAlterada
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<Response> DeletePenalizacao(string urlBase, string controller, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                client.BaseAddress = new Uri(urlBase);
+
+                var response = await client.DeleteAsync($"{controller}/{id}");
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = ObterMensagemErro(result)
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
     }
 }
