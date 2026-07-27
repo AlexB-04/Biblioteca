@@ -255,6 +255,19 @@
 
             livro.ExemplaresDisponiveis++;
 
+            Reserva primeiraReserva = dc.Reservas
+                .Where(r =>
+                    r.IdLivro == emprestimo.IdLivro &&
+                    r.Ativa == true &&
+                    r.DataDisponivel == null)
+                .OrderBy(r => r.Ordem)
+                .FirstOrDefault();
+
+            if (primeiraReserva != null)
+            {
+                primeiraReserva.DataDisponivel = DateTime.Now;
+            }
+
             dc.SubmitChanges();
 
             return Ok(new

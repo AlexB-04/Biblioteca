@@ -14,6 +14,8 @@
         // GET api/reservas
         public IHttpActionResult Get()
         {
+            AtualizarReservasExpiradas();
+
             var reservas = dc.Reservas
                 .Select(r => new
                 {
@@ -24,7 +26,8 @@
                     Livro = r.Livro.Titulo,
                     r.DataReserva,
                     r.Ordem,
-                    r.Ativa
+                    r.Ativa,
+                    r.DataDisponivel
                 })
                 .ToList();
 
@@ -34,6 +37,8 @@
         // GET api/reservas/1
         public IHttpActionResult Get(int id)
         {
+            AtualizarReservasExpiradas();
+
             var reserva = dc.Reservas.Where(r => r.IdReserva == id)
                 .Select(r => new
                 {
@@ -44,7 +49,8 @@
                     Livro = r.Livro.Titulo,
                     r.DataReserva,
                     r.Ordem,
-                    r.Ativa
+                    r.Ativa,
+                    r.DataDisponivel
                 })
                 .FirstOrDefault();
 
@@ -63,6 +69,8 @@
             {
                 return BadRequest("Dados da reserva inválidos.");
             }
+
+            AtualizarReservasExpiradas();
 
             Utilizador utilizador = dc.Utilizadors.FirstOrDefault(u => u.IdUtilizador == reserva.IdUtilizador);
 
@@ -109,6 +117,7 @@
             reserva.DataReserva = DateTime.Now;
             reserva.Ordem = ordem;
             reserva.Ativa = true;
+            reserva.DataDisponivel = null;
 
             dc.Reservas.InsertOnSubmit(reserva);
             dc.SubmitChanges();
@@ -122,13 +131,16 @@
                 Livro = livro.Titulo,
                 reserva.DataReserva,
                 reserva.Ordem,
-                reserva.Ativa
+                reserva.Ativa,
+                reserva.DataDisponivel
             });
         }
 
         // PUT api/reservas/1
         public IHttpActionResult Put(int id)
         {
+            AtualizarReservasExpiradas();
+
             Reserva reserva = dc.Reservas.FirstOrDefault(r => r.IdReserva == id);
 
             if (reserva == null)
@@ -157,6 +169,8 @@
 
             int ordemCancelada = reserva.Ordem;
 
+            bool reservaEstavaDisponivel = reserva.DataDisponivel != null;
+
             reserva.Ativa = false;
 
             var reservasSeguintes = dc.Reservas
@@ -171,6 +185,18 @@
                 reservaSeguinte.Ordem--;
             }
 
+            if (reservaEstavaDisponivel)
+            {
+                Reserva proximaReserva = reservasSeguintes
+                    .OrderBy(r => r.Ordem)
+                    .FirstOrDefault();
+
+                if (proximaReserva != null)
+                {
+                    proximaReserva.DataDisponivel = DateTime.Now;
+                }
+            }
+
             dc.SubmitChanges();
 
             return Ok(new
@@ -182,13 +208,16 @@
                 Livro = livro.Titulo,
                 reserva.DataReserva,
                 reserva.Ordem,
-                reserva.Ativa
+                reserva.Ativa,
+                reserva.DataDisponivel
             });
         }
 
         // DELETE api/reservas/1
         public IHttpActionResult Delete(int id)
         {
+            AtualizarReservasExpiradas();
+
             Reserva reserva = dc.Reservas.FirstOrDefault(r => r.IdReserva == id);
 
             if (reserva == null)
@@ -205,6 +234,51 @@
             dc.SubmitChanges();
 
             return Ok();
+        }
+
+        private void AtualizarReservasExpiradas()
+        {
+            DateTime agora = DateTime.Now;
+            DateTime limite = agora.AddDays(-3);
+
+            var reservasExpiradas = dc.Reservas
+                .Where(r =>
+                    r.Ativa == true &&
+                    r.DataDisponivel != null &&
+                    r.DataDisponivel <= limite)
+                .ToList();
+
+            foreach (Reserva reservaExpirada in reservasExpiradas)
+            {
+                int ordemExpirada = reservaExpirada.Ordem;
+
+                reservaExpirada.Ativa = false;
+
+                var reservasSeguintes = dc.Reservas
+                    .Where(r =>
+                        r.IdLivro == reservaExpirada.IdLivro &&
+                        r.Ativa == true &&
+                        r.Ordem > ordemExpirada)
+                    .OrderBy(r => r.Ordem)
+                    .ToList();
+
+                foreach (Reserva reservaSeguinte in reservasSeguintes)
+                {
+                    reservaSeguinte.Ordem--;
+                }
+
+                Reserva proximaReserva = reservasSeguintes.FirstOrDefault();
+
+                if (proximaReserva != null)
+                {
+                    proximaReserva.DataDisponivel = agora;
+                }
+            }
+
+            if (reservasExpiradas.Count > 0)
+            {
+                dc.SubmitChanges();
+            }
         }
     }
 }

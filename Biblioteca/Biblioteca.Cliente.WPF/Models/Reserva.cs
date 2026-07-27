@@ -21,5 +21,7 @@ namespace Biblioteca.Cliente.WPF.Models
         public int Ordem { get; set; }
 
         public bool Ativa { get; set; }
+
+        public DateTime? DataDisponivel { get; set; }
     }
 }

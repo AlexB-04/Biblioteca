@@ -33,8 +33,8 @@
       <Column Name="LimiteEmprestimos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Atrasos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Utilizador_Emprestimo" Member="Emprestimos" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Emprestimo" />
+      <Association Name="Utilizador_Penalizacoes" Member="Penalizacoes" Storage="_Penalizacaos" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Penalizacoes" />
       <Association Name="Utilizador_Reserva" Member="Reservas" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Reserva" />
-      <Association Name="Utilizador_Penalizacao" Member="Penalizacoes" Storage="_Penalizacaos" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Penalizacoes" />
     </Type>
   </Table>
   <Table Name="dbo.Emprestimos" Member="Emprestimos">
@@ -47,21 +47,9 @@
       <Column Name="DataDevolucao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Devolvido" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Multa" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Association Name="Emprestimo_Penalizacao" Member="Penalizacoes" Storage="_Penalizacaos" ThisKey="IdEmprestimo" OtherKey="IdEmprestimo" Type="Penalizacoes" />
+      <Association Name="Emprestimo_Penalizacoes" Member="Penalizacoes" Storage="_Penalizacaos" ThisKey="IdEmprestimo" OtherKey="IdEmprestimo" Type="Penalizacoes" />
       <Association Name="Livro_Emprestimo" Member="Livro" ThisKey="IdLivro" OtherKey="IdLivro" Type="Livro" IsForeignKey="true" />
       <Association Name="Utilizador_Emprestimo" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Reservas" Member="Reservas">
-    <Type Name="Reserva">
-      <Column Name="IdReserva" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="IdUtilizador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdLivro" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DataReserva" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Ordem" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Ativa" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Livro_Reserva" Member="Livro" ThisKey="IdLivro" OtherKey="IdLivro" Type="Livro" IsForeignKey="true" />
-      <Association Name="Utilizador_Reserva" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Penalizacoes" Member="Penalizacoes">
@@ -75,8 +63,21 @@
       <Column Name="DataPenalizacao" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Pago" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="DataPagamento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="Emprestimo_Penalizacao" Member="Emprestimo" ThisKey="IdEmprestimo" OtherKey="IdEmprestimo" Type="Emprestimo" IsForeignKey="true" DeleteRule="SET NULL" />
-      <Association Name="Utilizador_Penalizacao" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
+      <Association Name="Emprestimo_Penalizacoes" Member="Emprestimo" ThisKey="IdEmprestimo" OtherKey="IdEmprestimo" Type="Emprestimo" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="Utilizador_Penalizacoes" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reservas" Member="Reservas">
+    <Type Name="Reserva">
+      <Column Name="IdReserva" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdUtilizador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdLivro" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataReserva" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Ordem" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ativa" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DataDisponivel" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Livro_Reserva" Member="Livro" ThisKey="IdLivro" OtherKey="IdLivro" Type="Livro" IsForeignKey="true" />
+      <Association Name="Utilizador_Reserva" Member="Utilizador" ThisKey="IdUtilizador" OtherKey="IdUtilizador" Type="Utilizador" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

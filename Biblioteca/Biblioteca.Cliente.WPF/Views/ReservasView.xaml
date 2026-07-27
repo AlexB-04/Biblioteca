@@ -61,6 +61,8 @@
 
                 <DataGridTextColumn Header="Data da reserva" Binding="{Binding DataReserva, StringFormat=dd/MM/yyyy}" Width="130"/>
 
+                <DataGridTextColumn Header="Disponível desde" Binding="{Binding DataDisponivel, StringFormat=dd/MM/yyyy HH:mm}" Width="140"/>
+
                 <DataGridTextColumn Header="Ordem" Binding="{Binding Ordem}" Width="80"/>
 
                 <DataGridCheckBoxColumn Header="Ativa" Binding="{Binding Ativa}" Width="80"/>

@@ -42,12 +42,12 @@ namespace Biblioteca.API
     partial void InsertEmprestimo(Emprestimo instance);
     partial void UpdateEmprestimo(Emprestimo instance);
     partial void DeleteEmprestimo(Emprestimo instance);
-    partial void InsertReserva(Reserva instance);
-    partial void UpdateReserva(Reserva instance);
-    partial void DeleteReserva(Reserva instance);
     partial void InsertPenalizacoes(Penalizacoes instance);
     partial void UpdatePenalizacoes(Penalizacoes instance);
     partial void DeletePenalizacoes(Penalizacoes instance);
+    partial void InsertReserva(Reserva instance);
+    partial void UpdateReserva(Reserva instance);
+    partial void DeleteReserva(Reserva instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -106,19 +106,19 @@ namespace Biblioteca.API
 			}
 		}
 		
-		public System.Data.Linq.Table<Reserva> Reservas
-		{
-			get
-			{
-				return this.GetTable<Reserva>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Penalizacoes> Penalizacoes
 		{
 			get
 			{
 				return this.GetTable<Penalizacoes>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Reserva> Reservas
+		{
+			get
+			{
+				return this.GetTable<Reserva>();
 			}
 		}
 	}
@@ -634,9 +634,9 @@ namespace Biblioteca.API
 		
 		private EntitySet<Emprestimo> _Emprestimos;
 		
-		private EntitySet<Reserva> _Reservas;
-		
 		private EntitySet<Penalizacoes> _Penalizacaos;
+		
+		private EntitySet<Reserva> _Reservas;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -661,8 +661,8 @@ namespace Biblioteca.API
 		public Utilizador()
 		{
 			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
-			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
 			this._Penalizacaos = new EntitySet<Penalizacoes>(new Action<Penalizacoes>(this.attach_Penalizacaos), new Action<Penalizacoes>(this.detach_Penalizacaos));
+			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
 			OnCreated();
 		}
 		
@@ -819,6 +819,19 @@ namespace Biblioteca.API
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoes", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Penalizacoes> Penalizacoes
+		{
+			get
+			{
+				return this._Penalizacaos;
+			}
+			set
+			{
+				this._Penalizacaos.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Reserva", Storage="_Reservas", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
 		public EntitySet<Reserva> Reservas
 		{
@@ -829,19 +842,6 @@ namespace Biblioteca.API
 			set
 			{
 				this._Reservas.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacao", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
-		public EntitySet<Penalizacoes> Penalizacoes
-		{
-			get
-			{
-				return this._Penalizacaos;
-			}
-			set
-			{
-				this._Penalizacaos.Assign(value);
 			}
 		}
 		
@@ -877,18 +877,6 @@ namespace Biblioteca.API
 			entity.Utilizador = null;
 		}
 		
-		private void attach_Reservas(Reserva entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = this;
-		}
-		
-		private void detach_Reservas(Reserva entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = null;
-		}
-		
 		private void attach_Penalizacaos(Penalizacoes entity)
 		{
 			this.SendPropertyChanging();
@@ -896,6 +884,18 @@ namespace Biblioteca.API
 		}
 		
 		private void detach_Penalizacaos(Penalizacoes entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
+		}
+		
+		private void attach_Reservas(Reserva entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Reservas(Reserva entity)
 		{
 			this.SendPropertyChanging();
 			entity.Utilizador = null;
@@ -1128,7 +1128,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacao", Storage="_Penalizacaos", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoes", Storage="_Penalizacaos", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo")]
 		public EntitySet<Penalizacoes> Penalizacoes
 		{
 			get
@@ -1239,270 +1239,6 @@ namespace Biblioteca.API
 		{
 			this.SendPropertyChanging();
 			entity.Emprestimo = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reservas")]
-	public partial class Reserva : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IdReserva;
-		
-		private int _IdUtilizador;
-		
-		private int _IdLivro;
-		
-		private System.DateTime _DataReserva;
-		
-		private int _Ordem;
-		
-		private bool _Ativa;
-		
-		private EntityRef<Livro> _Livro;
-		
-		private EntityRef<Utilizador> _Utilizador;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdReservaChanging(int value);
-    partial void OnIdReservaChanged();
-    partial void OnIdUtilizadorChanging(int value);
-    partial void OnIdUtilizadorChanged();
-    partial void OnIdLivroChanging(int value);
-    partial void OnIdLivroChanged();
-    partial void OnDataReservaChanging(System.DateTime value);
-    partial void OnDataReservaChanged();
-    partial void OnOrdemChanging(int value);
-    partial void OnOrdemChanged();
-    partial void OnAtivaChanging(bool value);
-    partial void OnAtivaChanged();
-    #endregion
-		
-		public Reserva()
-		{
-			this._Livro = default(EntityRef<Livro>);
-			this._Utilizador = default(EntityRef<Utilizador>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdReserva", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int IdReserva
-		{
-			get
-			{
-				return this._IdReserva;
-			}
-			set
-			{
-				if ((this._IdReserva != value))
-				{
-					this.OnIdReservaChanging(value);
-					this.SendPropertyChanging();
-					this._IdReserva = value;
-					this.SendPropertyChanged("IdReserva");
-					this.OnIdReservaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", DbType="Int NOT NULL")]
-		public int IdUtilizador
-		{
-			get
-			{
-				return this._IdUtilizador;
-			}
-			set
-			{
-				if ((this._IdUtilizador != value))
-				{
-					if (this._Utilizador.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdUtilizadorChanging(value);
-					this.SendPropertyChanging();
-					this._IdUtilizador = value;
-					this.SendPropertyChanged("IdUtilizador");
-					this.OnIdUtilizadorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdLivro", DbType="Int NOT NULL")]
-		public int IdLivro
-		{
-			get
-			{
-				return this._IdLivro;
-			}
-			set
-			{
-				if ((this._IdLivro != value))
-				{
-					if (this._Livro.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdLivroChanging(value);
-					this.SendPropertyChanging();
-					this._IdLivro = value;
-					this.SendPropertyChanged("IdLivro");
-					this.OnIdLivroChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataReserva", DbType="DateTime NOT NULL")]
-		public System.DateTime DataReserva
-		{
-			get
-			{
-				return this._DataReserva;
-			}
-			set
-			{
-				if ((this._DataReserva != value))
-				{
-					this.OnDataReservaChanging(value);
-					this.SendPropertyChanging();
-					this._DataReserva = value;
-					this.SendPropertyChanged("DataReserva");
-					this.OnDataReservaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ordem", DbType="Int NOT NULL")]
-		public int Ordem
-		{
-			get
-			{
-				return this._Ordem;
-			}
-			set
-			{
-				if ((this._Ordem != value))
-				{
-					this.OnOrdemChanging(value);
-					this.SendPropertyChanging();
-					this._Ordem = value;
-					this.SendPropertyChanged("Ordem");
-					this.OnOrdemChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ativa", DbType="Bit NOT NULL")]
-		public bool Ativa
-		{
-			get
-			{
-				return this._Ativa;
-			}
-			set
-			{
-				if ((this._Ativa != value))
-				{
-					this.OnAtivaChanging(value);
-					this.SendPropertyChanging();
-					this._Ativa = value;
-					this.SendPropertyChanged("Ativa");
-					this.OnAtivaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Livro_Reserva", Storage="_Livro", ThisKey="IdLivro", OtherKey="IdLivro", IsForeignKey=true)]
-		public Livro Livro
-		{
-			get
-			{
-				return this._Livro.Entity;
-			}
-			set
-			{
-				Livro previousValue = this._Livro.Entity;
-				if (((previousValue != value) 
-							|| (this._Livro.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Livro.Entity = null;
-						previousValue.Reservas.Remove(this);
-					}
-					this._Livro.Entity = value;
-					if ((value != null))
-					{
-						value.Reservas.Add(this);
-						this._IdLivro = value.IdLivro;
-					}
-					else
-					{
-						this._IdLivro = default(int);
-					}
-					this.SendPropertyChanged("Livro");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Reserva", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
-		public Utilizador Utilizador
-		{
-			get
-			{
-				return this._Utilizador.Entity;
-			}
-			set
-			{
-				Utilizador previousValue = this._Utilizador.Entity;
-				if (((previousValue != value) 
-							|| (this._Utilizador.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Utilizador.Entity = null;
-						previousValue.Reservas.Remove(this);
-					}
-					this._Utilizador.Entity = value;
-					if ((value != null))
-					{
-						value.Reservas.Add(this);
-						this._IdUtilizador = value.IdUtilizador;
-					}
-					else
-					{
-						this._IdUtilizador = default(int);
-					}
-					this.SendPropertyChanged("Utilizador");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -1753,7 +1489,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacao", Storage="_Emprestimo", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo", IsForeignKey=true, DeleteRule="SET NULL")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Emprestimo_Penalizacoes", Storage="_Emprestimo", ThisKey="IdEmprestimo", OtherKey="IdEmprestimo", IsForeignKey=true, DeleteRule="SET NULL")]
 		public Emprestimo Emprestimo
 		{
 			get
@@ -1787,7 +1523,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacao", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoes", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
 		public Utilizador Utilizador
 		{
 			get
@@ -1810,6 +1546,294 @@ namespace Biblioteca.API
 					if ((value != null))
 					{
 						value.Penalizacoes.Add(this);
+						this._IdUtilizador = value.IdUtilizador;
+					}
+					else
+					{
+						this._IdUtilizador = default(int);
+					}
+					this.SendPropertyChanged("Utilizador");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reservas")]
+	public partial class Reserva : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdReserva;
+		
+		private int _IdUtilizador;
+		
+		private int _IdLivro;
+		
+		private System.DateTime _DataReserva;
+		
+		private int _Ordem;
+		
+		private bool _Ativa;
+		
+		private System.Nullable<System.DateTime> _DataDisponivel;
+		
+		private EntityRef<Livro> _Livro;
+		
+		private EntityRef<Utilizador> _Utilizador;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdReservaChanging(int value);
+    partial void OnIdReservaChanged();
+    partial void OnIdUtilizadorChanging(int value);
+    partial void OnIdUtilizadorChanged();
+    partial void OnIdLivroChanging(int value);
+    partial void OnIdLivroChanged();
+    partial void OnDataReservaChanging(System.DateTime value);
+    partial void OnDataReservaChanged();
+    partial void OnOrdemChanging(int value);
+    partial void OnOrdemChanged();
+    partial void OnAtivaChanging(bool value);
+    partial void OnAtivaChanged();
+    partial void OnDataDisponivelChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataDisponivelChanged();
+    #endregion
+		
+		public Reserva()
+		{
+			this._Livro = default(EntityRef<Livro>);
+			this._Utilizador = default(EntityRef<Utilizador>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdReserva", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdReserva
+		{
+			get
+			{
+				return this._IdReserva;
+			}
+			set
+			{
+				if ((this._IdReserva != value))
+				{
+					this.OnIdReservaChanging(value);
+					this.SendPropertyChanging();
+					this._IdReserva = value;
+					this.SendPropertyChanged("IdReserva");
+					this.OnIdReservaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", DbType="Int NOT NULL")]
+		public int IdUtilizador
+		{
+			get
+			{
+				return this._IdUtilizador;
+			}
+			set
+			{
+				if ((this._IdUtilizador != value))
+				{
+					if (this._Utilizador.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._IdUtilizador = value;
+					this.SendPropertyChanged("IdUtilizador");
+					this.OnIdUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdLivro", DbType="Int NOT NULL")]
+		public int IdLivro
+		{
+			get
+			{
+				return this._IdLivro;
+			}
+			set
+			{
+				if ((this._IdLivro != value))
+				{
+					if (this._Livro.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdLivroChanging(value);
+					this.SendPropertyChanging();
+					this._IdLivro = value;
+					this.SendPropertyChanged("IdLivro");
+					this.OnIdLivroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataReserva", DbType="DateTime NOT NULL")]
+		public System.DateTime DataReserva
+		{
+			get
+			{
+				return this._DataReserva;
+			}
+			set
+			{
+				if ((this._DataReserva != value))
+				{
+					this.OnDataReservaChanging(value);
+					this.SendPropertyChanging();
+					this._DataReserva = value;
+					this.SendPropertyChanged("DataReserva");
+					this.OnDataReservaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ordem", DbType="Int NOT NULL")]
+		public int Ordem
+		{
+			get
+			{
+				return this._Ordem;
+			}
+			set
+			{
+				if ((this._Ordem != value))
+				{
+					this.OnOrdemChanging(value);
+					this.SendPropertyChanging();
+					this._Ordem = value;
+					this.SendPropertyChanged("Ordem");
+					this.OnOrdemChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ativa", DbType="Bit NOT NULL")]
+		public bool Ativa
+		{
+			get
+			{
+				return this._Ativa;
+			}
+			set
+			{
+				if ((this._Ativa != value))
+				{
+					this.OnAtivaChanging(value);
+					this.SendPropertyChanging();
+					this._Ativa = value;
+					this.SendPropertyChanged("Ativa");
+					this.OnAtivaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataDisponivel", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DataDisponivel
+		{
+			get
+			{
+				return this._DataDisponivel;
+			}
+			set
+			{
+				if ((this._DataDisponivel != value))
+				{
+					this.OnDataDisponivelChanging(value);
+					this.SendPropertyChanging();
+					this._DataDisponivel = value;
+					this.SendPropertyChanged("DataDisponivel");
+					this.OnDataDisponivelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Livro_Reserva", Storage="_Livro", ThisKey="IdLivro", OtherKey="IdLivro", IsForeignKey=true)]
+		public Livro Livro
+		{
+			get
+			{
+				return this._Livro.Entity;
+			}
+			set
+			{
+				Livro previousValue = this._Livro.Entity;
+				if (((previousValue != value) 
+							|| (this._Livro.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Livro.Entity = null;
+						previousValue.Reservas.Remove(this);
+					}
+					this._Livro.Entity = value;
+					if ((value != null))
+					{
+						value.Reservas.Add(this);
+						this._IdLivro = value.IdLivro;
+					}
+					else
+					{
+						this._IdLivro = default(int);
+					}
+					this.SendPropertyChanged("Livro");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Reserva", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		public Utilizador Utilizador
+		{
+			get
+			{
+				return this._Utilizador.Entity;
+			}
+			set
+			{
+				Utilizador previousValue = this._Utilizador.Entity;
+				if (((previousValue != value) 
+							|| (this._Utilizador.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Utilizador.Entity = null;
+						previousValue.Reservas.Remove(this);
+					}
+					this._Utilizador.Entity = value;
+					if ((value != null))
+					{
+						value.Reservas.Add(this);
 						this._IdUtilizador = value.IdUtilizador;
 					}
 					else
