@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="Biblioteca.Cliente.WPF.Views.PenalizacoesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5"
+             Loaded="UserControl_Loaded">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Gestão de Penalizações" FontSize="26" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" Background="White" Padding="15" CornerRadius="6" Margin="0,0,0,15">
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="220"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Utilizador:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+
+                <ComboBox x:Name="cbUtilizadores" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Nome" SelectedValuePath="IdUtilizador" Margin="0,0,0,10"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Empréstimo:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+
+                <ComboBox x:Name="cbEmprestimos" Grid.Row="0" Grid.Column="4" DisplayMemberPath="Descricao" SelectedValuePath="IdEmprestimo" Margin="0,0,0,10"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Dias de atraso:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+
+                <TextBox x:Name="txtDiasAtraso" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Motivo:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+
+                <TextBox x:Name="txtMotivo" Grid.Row="1" Grid.Column="4" Margin="0,0,0,10"/>
+
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+
+                    <Button x:Name="btnAtualizar" Content="Atualizar" Width="100" Height="35" Margin="0,0,10,0" Click="btnAtualizar_Click"/>
+
+                    <Button x:Name="btnRegistar" Content="Registar" Width="100" Height="35" Margin="0,0,10,0" Click="btnRegistar_Click"/>
+
+                    <Button x:Name="btnPagar" Content="Pagar" Width="100" Height="35" Margin="0,0,10,0" Click="btnPagar_Click"/>
+
+                    <Button x:Name="btnEliminar" Content="Eliminar" Width="100" Height="35" Click="btnEliminar_Click"/>
+
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+
+        <DataGrid x:Name="dgPenalizacoes" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dgPenalizacoes_SelectionChanged" HorizontalScrollBarVisibility="Auto">
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="ID" Binding="{Binding IdPenalizacao}" Width="55"/>
+
+                <DataGridTextColumn Header="Utilizador" Binding="{Binding Utilizador}" Width="160"/>
+
+                <DataGridTextColumn Header="Empréstimo" Binding="{Binding IdEmprestimo}" Width="90"/>
+
+                <DataGridTextColumn Header="Valor" Binding="{Binding Valor, StringFormat={}{0:N2} €}" Width="80"/>
+
+                <DataGridTextColumn Header="Dias" Binding="{Binding DiasAtraso}" Width="60"/>
+
+                <DataGridTextColumn Header="Motivo" Binding="{Binding Motivo}" Width="250"/>
+
+                <DataGridTextColumn Header="Data" Binding="{Binding DataPenalizacao, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="145"/>
+
+                <DataGridCheckBoxColumn Header="Pago" Binding="{Binding Pago}" Width="60"/>
+
+                <DataGridTextColumn Header="Data do pagamento" Binding="{Binding DataPagamento, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="145"/>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>

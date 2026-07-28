@@ -29,7 +29,7 @@
 
                 <Button Content="Reservas" Height="45" Margin="10,5" Click="btnReservas_Click"/>
 
-                <Button Content="Penalizações" Height="45" Margin="10,5" IsEnabled="False"/>
+                <Button Content="Penalizações" Height="45" Margin="10,5" Click="btnPenalizacoes_Click"/>
 
             </StackPanel>
 

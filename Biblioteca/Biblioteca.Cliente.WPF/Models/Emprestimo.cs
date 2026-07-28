@@ -16,5 +16,12 @@ namespace Biblioteca.Cliente.WPF.Models
         public DateTime? DataDevolucao { get; set; }
         public bool Devolvido { get; set; }
         public decimal Multa { get; set; }
+        public string Descricao
+        {
+            get
+            {
+                return $"{IdEmprestimo} - {Utilizador} - {Livro}";
+            }
+        }
     }
 }

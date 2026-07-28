@@ -36,5 +36,10 @@ namespace Biblioteca.Cliente.WPF
         {
             conteudoPrincipal.Content = new ReservasView();
         }
+
+        private void btnPenalizacoes_Click(object sender, RoutedEventArgs e)
+        {
+            conteudoPrincipal.Content = new PenalizacoesView();
+        }
     }
 }
