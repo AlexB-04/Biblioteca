@@ -73,6 +73,20 @@
                 return BadRequest("O utilizador indicado não existe.");
             }
 
+            if (utilizador.BloqueadoAte.HasValue)
+            {
+                if (utilizador.BloqueadoAte.Value > DateTime.Now)
+                {
+                    return BadRequest(
+                    "O utilizador está bloqueado até " +
+                    utilizador.BloqueadoAte.Value.ToString("dd/MM/yyyy HH:mm") +
+                    " devido ao excesso de atrasos.");
+                }
+
+                utilizador.BloqueadoAte = null;
+                dc.SubmitChanges();
+            }
+
             bool temEmprestimoEmAtraso = dc.Emprestimos.Any(e =>
                 e.IdUtilizador == emprestimo.IdUtilizador &&
                 e.Devolvido == false &&
@@ -232,6 +246,11 @@
 
                 emprestimo.Multa = multa;
                 utilizador.Atrasos++;
+
+                if (utilizador.Atrasos >= 3)
+                {
+                    utilizador.BloqueadoAte = DateTime.Now.AddDays(7);
+                }
 
                 bool penalizacaoJaExiste = dc.Penalizacoes.Any(p => p.IdEmprestimo == emprestimo.IdEmprestimo);
 

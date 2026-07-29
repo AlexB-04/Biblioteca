@@ -22,7 +22,8 @@
                     u.Email,
                     u.TipoUtilizador,
                     u.LimiteEmprestimos,
-                    u.Atrasos
+                    u.Atrasos,
+                    u.BloqueadoAte
                 })
                 .ToList();
 
@@ -42,7 +43,8 @@
                     u.Email,
                     u.TipoUtilizador,
                     u.LimiteEmprestimos,
-                    u.Atrasos
+                    u.Atrasos,
+                    u.BloqueadoAte
                 })
                 .FirstOrDefault();
 
@@ -99,6 +101,8 @@
                 return BadRequest("Já existe um utilizador com esse email.");
             }
 
+            utilizador.BloqueadoAte = null;
+
             dc.Utilizadors.InsertOnSubmit(utilizador);
             dc.SubmitChanges();
 
@@ -110,7 +114,8 @@
                 utilizador.Email,
                 utilizador.TipoUtilizador,
                 utilizador.LimiteEmprestimos,
-                utilizador.Atrasos
+                utilizador.Atrasos,
+                utilizador.BloqueadoAte
             });
         }
 
@@ -174,6 +179,7 @@
             utilizadorExistente.TipoUtilizador = utilizador.TipoUtilizador;
             utilizadorExistente.LimiteEmprestimos = utilizador.LimiteEmprestimos;
             utilizadorExistente.Atrasos = utilizador.Atrasos;
+            utilizadorExistente.BloqueadoAte = utilizador.BloqueadoAte;
 
             dc.SubmitChanges();
 
@@ -185,7 +191,8 @@
                 utilizadorExistente.Email,
                 utilizadorExistente.TipoUtilizador,
                 utilizadorExistente.LimiteEmprestimos,
-                utilizadorExistente.Atrasos
+                utilizadorExistente.Atrasos,
+                utilizadorExistente.BloqueadoAte
             });
         }
 

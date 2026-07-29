@@ -13,6 +13,7 @@ namespace Biblioteca.Cliente.WPF.Models
         public string TipoUtilizador { get; set; }
         public int LimiteEmprestimos { get; set; }
         public int Atrasos { get; set; }
+        public DateTime? BloqueadoAte { get; set; }
         public override string ToString()
         {
             return $"{Nome} - {TipoUtilizador}";

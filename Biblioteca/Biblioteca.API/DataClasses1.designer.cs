@@ -36,9 +36,6 @@ namespace Biblioteca.API
     partial void InsertLivro(Livro instance);
     partial void UpdateLivro(Livro instance);
     partial void DeleteLivro(Livro instance);
-    partial void InsertUtilizador(Utilizador instance);
-    partial void UpdateUtilizador(Utilizador instance);
-    partial void DeleteUtilizador(Utilizador instance);
     partial void InsertEmprestimo(Emprestimo instance);
     partial void UpdateEmprestimo(Emprestimo instance);
     partial void DeleteEmprestimo(Emprestimo instance);
@@ -48,6 +45,9 @@ namespace Biblioteca.API
     partial void InsertReserva(Reserva instance);
     partial void UpdateReserva(Reserva instance);
     partial void DeleteReserva(Reserva instance);
+    partial void InsertUtilizador(Utilizador instance);
+    partial void UpdateUtilizador(Utilizador instance);
+    partial void DeleteUtilizador(Utilizador instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -90,14 +90,6 @@ namespace Biblioteca.API
 			}
 		}
 		
-		public System.Data.Linq.Table<Utilizador> Utilizadors
-		{
-			get
-			{
-				return this.GetTable<Utilizador>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Emprestimo> Emprestimos
 		{
 			get
@@ -119,6 +111,14 @@ namespace Biblioteca.API
 			get
 			{
 				return this.GetTable<Reserva>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Utilizador> Utilizadors
+		{
+			get
+			{
+				return this.GetTable<Utilizador>();
 			}
 		}
 	}
@@ -612,296 +612,6 @@ namespace Biblioteca.API
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Utilizadores")]
-	public partial class Utilizador : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IdUtilizador;
-		
-		private string _Nome;
-		
-		private string _Contacto;
-		
-		private string _Email;
-		
-		private string _TipoUtilizador;
-		
-		private int _LimiteEmprestimos;
-		
-		private int _Atrasos;
-		
-		private EntitySet<Emprestimo> _Emprestimos;
-		
-		private EntitySet<Penalizacoes> _Penalizacaos;
-		
-		private EntitySet<Reserva> _Reservas;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdUtilizadorChanging(int value);
-    partial void OnIdUtilizadorChanged();
-    partial void OnNomeChanging(string value);
-    partial void OnNomeChanged();
-    partial void OnContactoChanging(string value);
-    partial void OnContactoChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnTipoUtilizadorChanging(string value);
-    partial void OnTipoUtilizadorChanged();
-    partial void OnLimiteEmprestimosChanging(int value);
-    partial void OnLimiteEmprestimosChanged();
-    partial void OnAtrasosChanging(int value);
-    partial void OnAtrasosChanged();
-    #endregion
-		
-		public Utilizador()
-		{
-			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
-			this._Penalizacaos = new EntitySet<Penalizacoes>(new Action<Penalizacoes>(this.attach_Penalizacaos), new Action<Penalizacoes>(this.detach_Penalizacaos));
-			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int IdUtilizador
-		{
-			get
-			{
-				return this._IdUtilizador;
-			}
-			set
-			{
-				if ((this._IdUtilizador != value))
-				{
-					this.OnIdUtilizadorChanging(value);
-					this.SendPropertyChanging();
-					this._IdUtilizador = value;
-					this.SendPropertyChanged("IdUtilizador");
-					this.OnIdUtilizadorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nome", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string Nome
-		{
-			get
-			{
-				return this._Nome;
-			}
-			set
-			{
-				if ((this._Nome != value))
-				{
-					this.OnNomeChanging(value);
-					this.SendPropertyChanging();
-					this._Nome = value;
-					this.SendPropertyChanged("Nome");
-					this.OnNomeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contacto", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
-		public string Contacto
-		{
-			get
-			{
-				return this._Contacto;
-			}
-			set
-			{
-				if ((this._Contacto != value))
-				{
-					this.OnContactoChanging(value);
-					this.SendPropertyChanging();
-					this._Contacto = value;
-					this.SendPropertyChanged("Contacto");
-					this.OnContactoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TipoUtilizador", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string TipoUtilizador
-		{
-			get
-			{
-				return this._TipoUtilizador;
-			}
-			set
-			{
-				if ((this._TipoUtilizador != value))
-				{
-					this.OnTipoUtilizadorChanging(value);
-					this.SendPropertyChanging();
-					this._TipoUtilizador = value;
-					this.SendPropertyChanged("TipoUtilizador");
-					this.OnTipoUtilizadorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LimiteEmprestimos", DbType="Int NOT NULL")]
-		public int LimiteEmprestimos
-		{
-			get
-			{
-				return this._LimiteEmprestimos;
-			}
-			set
-			{
-				if ((this._LimiteEmprestimos != value))
-				{
-					this.OnLimiteEmprestimosChanging(value);
-					this.SendPropertyChanging();
-					this._LimiteEmprestimos = value;
-					this.SendPropertyChanged("LimiteEmprestimos");
-					this.OnLimiteEmprestimosChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Atrasos", DbType="Int NOT NULL")]
-		public int Atrasos
-		{
-			get
-			{
-				return this._Atrasos;
-			}
-			set
-			{
-				if ((this._Atrasos != value))
-				{
-					this.OnAtrasosChanging(value);
-					this.SendPropertyChanging();
-					this._Atrasos = value;
-					this.SendPropertyChanged("Atrasos");
-					this.OnAtrasosChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Emprestimo", Storage="_Emprestimos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
-		public EntitySet<Emprestimo> Emprestimos
-		{
-			get
-			{
-				return this._Emprestimos;
-			}
-			set
-			{
-				this._Emprestimos.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoes", Storage="_Penalizacaos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
-		public EntitySet<Penalizacoes> Penalizacoes
-		{
-			get
-			{
-				return this._Penalizacaos;
-			}
-			set
-			{
-				this._Penalizacaos.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Reserva", Storage="_Reservas", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
-		public EntitySet<Reserva> Reservas
-		{
-			get
-			{
-				return this._Reservas;
-			}
-			set
-			{
-				this._Reservas.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Emprestimos(Emprestimo entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = this;
-		}
-		
-		private void detach_Emprestimos(Emprestimo entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = null;
-		}
-		
-		private void attach_Penalizacaos(Penalizacoes entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = this;
-		}
-		
-		private void detach_Penalizacaos(Penalizacoes entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = null;
-		}
-		
-		private void attach_Reservas(Reserva entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = this;
-		}
-		
-		private void detach_Reservas(Reserva entity)
-		{
-			this.SendPropertyChanging();
-			entity.Utilizador = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Emprestimos")]
 	public partial class Emprestimo : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1175,7 +885,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Emprestimo", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Emprestimo", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
 		public Utilizador Utilizador
 		{
 			get
@@ -1523,7 +1233,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Penalizacoes", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Penalizacoes", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
 		public Utilizador Utilizador
 		{
 			get
@@ -1811,7 +1521,7 @@ namespace Biblioteca.API
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizador_Reserva", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Reserva", Storage="_Utilizador", ThisKey="IdUtilizador", OtherKey="IdUtilizador", IsForeignKey=true)]
 		public Utilizador Utilizador
 		{
 			get
@@ -1863,6 +1573,320 @@ namespace Biblioteca.API
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Utilizadores")]
+	public partial class Utilizador : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdUtilizador;
+		
+		private string _Nome;
+		
+		private string _Contacto;
+		
+		private string _Email;
+		
+		private string _TipoUtilizador;
+		
+		private int _LimiteEmprestimos;
+		
+		private int _Atrasos;
+		
+		private System.Nullable<System.DateTime> _BloqueadoAte;
+		
+		private EntitySet<Emprestimo> _Emprestimos;
+		
+		private EntitySet<Penalizacoes> _Penalizacoes;
+		
+		private EntitySet<Reserva> _Reservas;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdUtilizadorChanging(int value);
+    partial void OnIdUtilizadorChanged();
+    partial void OnNomeChanging(string value);
+    partial void OnNomeChanged();
+    partial void OnContactoChanging(string value);
+    partial void OnContactoChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnTipoUtilizadorChanging(string value);
+    partial void OnTipoUtilizadorChanged();
+    partial void OnLimiteEmprestimosChanging(int value);
+    partial void OnLimiteEmprestimosChanged();
+    partial void OnAtrasosChanging(int value);
+    partial void OnAtrasosChanged();
+    partial void OnBloqueadoAteChanging(System.Nullable<System.DateTime> value);
+    partial void OnBloqueadoAteChanged();
+    #endregion
+		
+		public Utilizador()
+		{
+			this._Emprestimos = new EntitySet<Emprestimo>(new Action<Emprestimo>(this.attach_Emprestimos), new Action<Emprestimo>(this.detach_Emprestimos));
+			this._Penalizacoes = new EntitySet<Penalizacoes>(new Action<Penalizacoes>(this.attach_Penalizacoes), new Action<Penalizacoes>(this.detach_Penalizacoes));
+			this._Reservas = new EntitySet<Reserva>(new Action<Reserva>(this.attach_Reservas), new Action<Reserva>(this.detach_Reservas));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUtilizador", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdUtilizador
+		{
+			get
+			{
+				return this._IdUtilizador;
+			}
+			set
+			{
+				if ((this._IdUtilizador != value))
+				{
+					this.OnIdUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._IdUtilizador = value;
+					this.SendPropertyChanged("IdUtilizador");
+					this.OnIdUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nome", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Nome
+		{
+			get
+			{
+				return this._Nome;
+			}
+			set
+			{
+				if ((this._Nome != value))
+				{
+					this.OnNomeChanging(value);
+					this.SendPropertyChanging();
+					this._Nome = value;
+					this.SendPropertyChanged("Nome");
+					this.OnNomeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contacto", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Contacto
+		{
+			get
+			{
+				return this._Contacto;
+			}
+			set
+			{
+				if ((this._Contacto != value))
+				{
+					this.OnContactoChanging(value);
+					this.SendPropertyChanging();
+					this._Contacto = value;
+					this.SendPropertyChanged("Contacto");
+					this.OnContactoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TipoUtilizador", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string TipoUtilizador
+		{
+			get
+			{
+				return this._TipoUtilizador;
+			}
+			set
+			{
+				if ((this._TipoUtilizador != value))
+				{
+					this.OnTipoUtilizadorChanging(value);
+					this.SendPropertyChanging();
+					this._TipoUtilizador = value;
+					this.SendPropertyChanged("TipoUtilizador");
+					this.OnTipoUtilizadorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LimiteEmprestimos", DbType="Int NOT NULL")]
+		public int LimiteEmprestimos
+		{
+			get
+			{
+				return this._LimiteEmprestimos;
+			}
+			set
+			{
+				if ((this._LimiteEmprestimos != value))
+				{
+					this.OnLimiteEmprestimosChanging(value);
+					this.SendPropertyChanging();
+					this._LimiteEmprestimos = value;
+					this.SendPropertyChanged("LimiteEmprestimos");
+					this.OnLimiteEmprestimosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Atrasos", DbType="Int NOT NULL")]
+		public int Atrasos
+		{
+			get
+			{
+				return this._Atrasos;
+			}
+			set
+			{
+				if ((this._Atrasos != value))
+				{
+					this.OnAtrasosChanging(value);
+					this.SendPropertyChanging();
+					this._Atrasos = value;
+					this.SendPropertyChanged("Atrasos");
+					this.OnAtrasosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BloqueadoAte", DbType="DateTime")]
+		public System.Nullable<System.DateTime> BloqueadoAte
+		{
+			get
+			{
+				return this._BloqueadoAte;
+			}
+			set
+			{
+				if ((this._BloqueadoAte != value))
+				{
+					this.OnBloqueadoAteChanging(value);
+					this.SendPropertyChanging();
+					this._BloqueadoAte = value;
+					this.SendPropertyChanged("BloqueadoAte");
+					this.OnBloqueadoAteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Emprestimo", Storage="_Emprestimos", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Emprestimo> Emprestimos
+		{
+			get
+			{
+				return this._Emprestimos;
+			}
+			set
+			{
+				this._Emprestimos.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Penalizacoes", Storage="_Penalizacoes", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Penalizacoes> Penalizacoes
+		{
+			get
+			{
+				return this._Penalizacoes;
+			}
+			set
+			{
+				this._Penalizacoes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Utilizadore_Reserva", Storage="_Reservas", ThisKey="IdUtilizador", OtherKey="IdUtilizador")]
+		public EntitySet<Reserva> Reservas
+		{
+			get
+			{
+				return this._Reservas;
+			}
+			set
+			{
+				this._Reservas.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Emprestimos(Emprestimo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
+		}
+		
+		private void attach_Penalizacoes(Penalizacoes entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Penalizacoes(Penalizacoes entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
+		}
+		
+		private void attach_Reservas(Reserva entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = this;
+		}
+		
+		private void detach_Reservas(Reserva entity)
+		{
+			this.SendPropertyChanging();
+			entity.Utilizador = null;
 		}
 	}
 }
