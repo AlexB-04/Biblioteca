@@ -9,27 +9,21 @@
              Loaded="UserControl_Loaded">
 
     <Grid Margin="10">
-
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="btnAtualizarLivros" Content="Atualizar" Width="180" Height="35" Click="btnAtualizarLivros_Click"/>
-
             <Button x:Name="btnGuardarLivro" Content="Guardar" Width="100" Height="35" Margin="10,0,0,0" Click="btnGuardarLivro_Click"/>
-
             <Button x:Name="btnAlterarLivro" Content="Alterar" Width="100" Height="35" Margin="10,0,0,0" Click="btnAlterarLivro_Click"/>
-
             <Button x:Name="btnEliminarLivro" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarLivro_Click"/>
-
         </StackPanel>
-        
-        <Grid Grid.Row="1" Margin="0,10,0,0">
 
+        <Grid Grid.Row="1" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="*"/>
@@ -64,11 +58,44 @@
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Categoria" VerticalAlignment="Center"/>
             <ComboBox x:Name="cmbCategoria" Grid.Row="3" Grid.Column="1" Height="28" Margin="5" DisplayMemberPath="Nome" SelectedValuePath="IdCategoria"/>
-
         </Grid>
-        
-        <DataGrid x:Name="dgLivros" Grid.Row="2" Margin="0,10,0,0" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="dgLivros_SelectionChanged"/>
 
+        <Border Grid.Row="2" Background="#F5F5F5" BorderBrush="#D0D0D0" BorderThickness="1" Padding="10" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Pesquisar:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox x:Name="txtPesquisaLivro" Grid.Column="1" Height="28"/>
+
+                <TextBlock Grid.Column="3" Text="Categoria:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="cmbFiltroCategoria" Grid.Column="4" Height="28" DisplayMemberPath="Nome" SelectedValuePath="IdCategoria"/>
+
+                <TextBlock Grid.Column="6" Text="Estado:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="cmbEstadoLivro" Grid.Column="7" Height="28"/>
+
+                <Button x:Name="btnPesquisarLivro" Grid.Column="9" Content="Pesquisar" Height="30" Margin="0,0,10,0" Click="btnPesquisarLivro_Click"/>
+                <Button x:Name="btnLimparPesquisa" Grid.Column="10" Content="Limpar" Height="30" Click="btnLimparPesquisa_Click"/>
+            </Grid>
+        </Border>
+
+        <DataGrid x:Name="dgLivros"
+                  Grid.Row="3"
+                  Margin="0,10,0,0"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  HorizontalScrollBarVisibility="Auto"
+                  SelectionChanged="dgLivros_SelectionChanged"/>
     </Grid>
-
 </UserControl>

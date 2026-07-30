@@ -1,7 +1,8 @@
-﻿using Biblioteca.Cliente.WPF.Models;
-using Biblioteca.Cliente.WPF.Services;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Biblioteca.Cliente.WPF.Models;
+using Biblioteca.Cliente.WPF.Services;
 
 namespace Biblioteca.Cliente.WPF.Views
 {
@@ -14,6 +15,10 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private Livro livroSelecionado;
 
+        private List<Livro> todosLivros = new List<Livro>();
+        private List<Emprestimo> todosEmprestimos = new List<Emprestimo>();
+        private List<Reserva> todasReservas = new List<Reserva>();
+
         public LivrosView()
         {
             InitializeComponent();
@@ -21,8 +26,20 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            cmbEstadoLivro.ItemsSource = new List<string>
+            {
+                "Todos",
+                "Disponíveis",
+                "Emprestados",
+                "Reservados"
+            };
+
+            cmbEstadoLivro.SelectedIndex = 0;
+
             await CarregarCategoriasAsync();
             await CarregarLivrosAsync();
+            await CarregarEmprestimosAsync();
+            await CarregarReservasAsync();
         }
 
         private async Task CarregarCategoriasAsync()
@@ -31,13 +48,27 @@ namespace Biblioteca.Cliente.WPF.Views
 
             if (!response.IsSuccess)
             {
-                MessageBox.Show(response.Message,"Erro",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
             }
 
             List<Categoria> categorias = (List<Categoria>)response.Result;
+
             cmbCategoria.ItemsSource = categorias;
+
+            List<Categoria> categoriasFiltro = new List<Categoria>();
+
+            categoriasFiltro.Add(new Categoria
+            {
+                IdCategoria = 0,
+                Nome = "Todas"
+            });
+
+            categoriasFiltro.AddRange(categorias);
+
+            cmbFiltroCategoria.ItemsSource = categoriasFiltro;
+            cmbFiltroCategoria.SelectedIndex = 0;
         }
 
         private async Task CarregarLivrosAsync()
@@ -48,16 +79,91 @@ namespace Biblioteca.Cliente.WPF.Views
 
             if (!response.IsSuccess)
             {
-                MessageBox.Show(response.Message,"Erro",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 btnAtualizarLivros.IsEnabled = true;
+
                 return;
             }
 
-            List<Livro> livros = (List<Livro>)response.Result;
+            todosLivros = (List<Livro>)response.Result;
 
-            dgLivros.ItemsSource = livros;
+            dgLivros.ItemsSource = todosLivros;
             btnAtualizarLivros.IsEnabled = true;
+        }
+
+        private async Task CarregarEmprestimosAsync()
+        {
+            Response response = await apiService.GetEmprestimos("http://localhost:56363/", "api/emprestimos");
+
+            if (!response.IsSuccess)
+            {
+                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return;
+            }
+
+            todosEmprestimos = (List<Emprestimo>)response.Result;
+        }
+
+        private async Task CarregarReservasAsync()
+        {
+            Response response = await apiService.GetReservas("http://localhost:56363/", "api/reservas");
+
+            if (!response.IsSuccess)
+            {
+                MessageBox.Show(response.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return;
+            }
+
+            todasReservas = (List<Reserva>)response.Result;
+        }
+
+        private void AplicarFiltros()
+        {
+            IEnumerable<Livro> livrosFiltrados = todosLivros;
+
+            string pesquisa = txtPesquisaLivro.Text.Trim().ToLower();
+
+            if (!string.IsNullOrWhiteSpace(pesquisa))
+            {
+                livrosFiltrados = livrosFiltrados.Where(l =>
+                    l.Titulo.ToLower().Contains(pesquisa) ||
+                    l.Autor.ToLower().Contains(pesquisa) ||
+                    l.Genero.ToLower().Contains(pesquisa) ||
+                    l.Categoria.ToLower().Contains(pesquisa) ||
+                    l.AnoPublicacao.ToString().Contains(pesquisa));
+            }
+
+            if (cmbFiltroCategoria.SelectedValue != null)
+            {
+                int idCategoria = Convert.ToInt32(cmbFiltroCategoria.SelectedValue);
+
+                if (idCategoria != 0)
+                {
+                    livrosFiltrados = livrosFiltrados.Where(l => l.IdCategoria == idCategoria);
+                }
+            }
+
+            string estado = cmbEstadoLivro.SelectedItem as string;
+
+            if (estado == "Disponíveis")
+            {
+                livrosFiltrados = livrosFiltrados.Where(l => l.ExemplaresDisponiveis > 0);
+            }
+            else if (estado == "Emprestados")
+            {
+                livrosFiltrados = livrosFiltrados.Where(l =>
+                    todosEmprestimos.Any(e => e.IdLivro == l.IdLivro && e.Devolvido == false));
+            }
+            else if (estado == "Reservados")
+            {
+                livrosFiltrados = livrosFiltrados.Where(l =>
+                    todasReservas.Any(r => r.IdLivro == l.IdLivro && r.Ativa == true));
+            }
+
+            dgLivros.ItemsSource = livrosFiltrados.ToList();
         }
 
         private void dgLivros_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -73,9 +179,7 @@ namespace Biblioteca.Cliente.WPF.Views
             txtAutor.Text = livroSelecionado.Autor;
             txtEditora.Text = livroSelecionado.Editora;
             txtAnoPublicacao.Text = livroSelecionado.AnoPublicacao.ToString();
-
             txtGenero.Text = livroSelecionado.Genero;
-
             txtExemplaresDisponiveis.Text = livroSelecionado.ExemplaresDisponiveis.ToString();
 
             cmbCategoria.SelectedValue = livroSelecionado.IdCategoria;
@@ -100,8 +204,15 @@ namespace Biblioteca.Cliente.WPF.Views
         {
             LimparFormulario();
 
+            txtPesquisaLivro.Clear();
+            cmbEstadoLivro.SelectedIndex = 0;
+
             await CarregarCategoriasAsync();
             await CarregarLivrosAsync();
+            await CarregarEmprestimosAsync();
+            await CarregarReservasAsync();
+
+            dgLivros.ItemsSource = todosLivros;
         }
 
         private async void btnGuardarLivro_Click(object sender, RoutedEventArgs e)
@@ -129,7 +240,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
             if (!int.TryParse(txtExemplaresDisponiveis.Text, out int exemplaresDisponiveis) || exemplaresDisponiveis < 0)
             {
-                MessageBox.Show( "O número de exemplares disponíveis é inválido.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("O número de exemplares disponíveis é inválido.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 return;
             }
@@ -154,7 +265,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 IdCategoria = idCategoria
             };
 
-            Response response = await apiService.PostLivro( "http://localhost:56363/", "api/livros", livro);
+            Response response = await apiService.PostLivro("http://localhost:56363/", "api/livros", livro);
 
             if (!response.IsSuccess)
             {
@@ -166,6 +277,7 @@ namespace Biblioteca.Cliente.WPF.Views
             MessageBox.Show("Livro criado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
 
             LimparFormulario();
+
             await CarregarLivrosAsync();
         }
 
@@ -239,6 +351,7 @@ namespace Biblioteca.Cliente.WPF.Views
             MessageBox.Show("Livro alterado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
 
             LimparFormulario();
+
             await CarregarLivrosAsync();
         }
 
@@ -270,7 +383,27 @@ namespace Biblioteca.Cliente.WPF.Views
             MessageBox.Show("Livro eliminado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
 
             LimparFormulario();
+
             await CarregarLivrosAsync();
+        }
+
+        private void btnPesquisarLivro_Click(object sender, RoutedEventArgs e)
+        {
+            LimparFormulario();
+
+            AplicarFiltros();
+        }
+
+        private void btnLimparPesquisa_Click(object sender, RoutedEventArgs e)
+        {
+            txtPesquisaLivro.Clear();
+
+            cmbFiltroCategoria.SelectedIndex = 0;
+            cmbEstadoLivro.SelectedIndex = 0;
+
+            LimparFormulario();
+
+            dgLivros.ItemsSource = todosLivros;
         }
     }
 }
