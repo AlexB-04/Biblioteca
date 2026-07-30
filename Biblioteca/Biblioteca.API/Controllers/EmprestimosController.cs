@@ -66,6 +66,8 @@
                 return BadRequest("Dados do empréstimo inválidos.");
             }
 
+            AtualizarReservasExpiradas();
+
             Utilizador utilizador = dc.Utilizadors.FirstOrDefault(u => u.IdUtilizador == emprestimo.IdUtilizador);
 
             if (utilizador == null)
@@ -202,6 +204,51 @@
             }
 
             return 7;
+        }
+
+        private void AtualizarReservasExpiradas()
+        {
+            DateTime agora = DateTime.Now;
+            DateTime limite = agora.AddDays(-3);
+
+            var reservasExpiradas = dc.Reservas
+                .Where(r =>
+                    r.Ativa == true &&
+                    r.DataDisponivel != null &&
+                    r.DataDisponivel <= limite)
+                .ToList();
+
+            foreach (Reserva reservaExpirada in reservasExpiradas)
+            {
+                int ordemExpirada = reservaExpirada.Ordem;
+
+                reservaExpirada.Ativa = false;
+
+                var reservasSeguintes = dc.Reservas
+                    .Where(r =>
+                        r.IdLivro == reservaExpirada.IdLivro &&
+                        r.Ativa == true &&
+                        r.Ordem > ordemExpirada)
+                    .OrderBy(r => r.Ordem)
+                    .ToList();
+
+                foreach (Reserva reservaSeguinte in reservasSeguintes)
+                {
+                    reservaSeguinte.Ordem--;
+                }
+
+                Reserva proximaReserva = reservasSeguintes.FirstOrDefault();
+
+                if (proximaReserva != null)
+                {
+                    proximaReserva.DataDisponivel = agora;
+                }
+            }
+
+            if (reservasExpiradas.Count > 0)
+            {
+                dc.SubmitChanges();
+            }
         }
 
         // PUT api/emprestimos/1
