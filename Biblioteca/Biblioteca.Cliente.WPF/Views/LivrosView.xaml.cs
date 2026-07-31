@@ -154,13 +154,11 @@ namespace Biblioteca.Cliente.WPF.Views
             }
             else if (estado == "Emprestados")
             {
-                livrosFiltrados = livrosFiltrados.Where(l =>
-                    todosEmprestimos.Any(e => e.IdLivro == l.IdLivro && e.Devolvido == false));
+                livrosFiltrados = livrosFiltrados.Where(l => todosEmprestimos.Any(e => e.IdLivro == l.IdLivro && e.Devolvido == false));
             }
             else if (estado == "Reservados")
             {
-                livrosFiltrados = livrosFiltrados.Where(l =>
-                    todasReservas.Any(r => r.IdLivro == l.IdLivro && r.Ativa == true));
+                livrosFiltrados = livrosFiltrados.Where(l => todasReservas.Any(r => r.IdLivro == l.IdLivro && r.Ativa == true));
             }
 
             dgLivros.ItemsSource = livrosFiltrados.ToList();

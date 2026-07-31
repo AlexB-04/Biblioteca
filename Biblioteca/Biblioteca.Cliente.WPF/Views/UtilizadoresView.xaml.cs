@@ -1,4 +1,5 @@
-﻿using Biblioteca.Cliente.WPF.Models;
+﻿using System.Linq;
+using Biblioteca.Cliente.WPF.Models;
 using Biblioteca.Cliente.WPF.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Biblioteca.Cliente.WPF.Views
         private readonly ApiService apiService = new ApiService();
 
         private Utilizador utilizadorSelecionado;
+
+        private List<Utilizador> todosUtilizadores = new List<Utilizador>();
 
         public UtilizadoresView()
         {
@@ -41,11 +44,47 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            List<Utilizador> utilizadores = (List<Utilizador>)response.Result;
+            todosUtilizadores = (List<Utilizador>)response.Result;
 
-            dgUtilizadores.ItemsSource = utilizadores;
+            dgUtilizadores.ItemsSource = todosUtilizadores;
 
             btnAtualizarUtilizadores.IsEnabled = true;
+        }
+
+        private void AplicarPesquisa()
+        {
+            IEnumerable<Utilizador> utilizadoresFiltrados = todosUtilizadores;
+
+            string pesquisa = txtPesquisaUtilizador.Text.Trim().ToLower();
+
+            if (!string.IsNullOrWhiteSpace(pesquisa))
+            {
+                utilizadoresFiltrados = utilizadoresFiltrados
+                    .Where(u =>
+                        u.IdUtilizador.ToString().Contains(pesquisa) ||
+                        u.Nome.ToLower().Contains(pesquisa) ||
+                        u.Email.ToLower().Contains(pesquisa) ||
+                        u.Contacto.ToLower().Contains(pesquisa) ||
+                        u.TipoUtilizador.ToLower().Contains(pesquisa));
+            }
+
+            dgUtilizadores.ItemsSource = utilizadoresFiltrados.ToList();
+        }
+
+        private void btnPesquisarUtilizador_Click(object sender, RoutedEventArgs e)
+        {
+            LimparFormulario();
+
+            AplicarPesquisa();
+        }
+
+        private void btnLimparPesquisa_Click(object sender, RoutedEventArgs e)
+        {
+            txtPesquisaUtilizador.Clear();
+
+            LimparFormulario();
+
+            dgUtilizadores.ItemsSource = todosUtilizadores;
         }
 
         private void LimparFormulario()
@@ -64,6 +103,8 @@ namespace Biblioteca.Cliente.WPF.Views
         private async void btnAtualizarUtilizadores_Click(object sender, RoutedEventArgs e)
         {
             LimparFormulario();
+
+            txtPesquisaUtilizador.Clear();
 
             await CarregarUtilizadoresAsync();
         }
@@ -214,7 +255,8 @@ namespace Biblioteca.Cliente.WPF.Views
                 Email = txtEmail.Text,
                 TipoUtilizador = txtTipoUtilizador.Text,
                 LimiteEmprestimos = limiteEmprestimos,
-                Atrasos = atrasos
+                Atrasos = atrasos,
+                BloqueadoAte = utilizadorSelecionado.BloqueadoAte
             };
 
             Response response = await apiService.PutUtilizador("http://localhost:56363/", "api/utilizadores", utilizadorAlterado);
