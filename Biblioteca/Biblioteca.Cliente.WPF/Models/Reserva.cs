@@ -23,5 +23,36 @@ namespace Biblioteca.Cliente.WPF.Models
         public bool Ativa { get; set; }
 
         public DateTime? DataDisponivel { get; set; }
+
+        public string Estado
+        {
+            get
+            {
+                if (!Ativa)
+                {
+                    return "Inativa";
+                }
+
+                if (DataDisponivel.HasValue)
+                {
+                    return "Disponível para levantamento";
+                }
+
+                return "A aguardar disponibilidade";
+            }
+        }
+
+        public string DisponivelAte
+        {
+            get
+            {
+                if (DataDisponivel.HasValue)
+                {
+                    return DataDisponivel.Value.AddDays(3).ToString("dd/MM/yyyy HH:mm");
+                }
+
+                return "";
+            }
+        }
     }
 }

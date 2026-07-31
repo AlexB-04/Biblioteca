@@ -49,7 +49,7 @@
 
         </Grid>
 
-        <DataGrid x:Name="dgReservas" Grid.Row="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dgReservas_SelectionChanged">
+        <DataGrid x:Name="dgReservas" Grid.Row="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" HorizontalScrollBarVisibility="Auto" SelectionChanged="dgReservas_SelectionChanged">
 
             <DataGrid.Columns>
 
@@ -61,12 +61,15 @@
 
                 <DataGridTextColumn Header="Data da reserva" Binding="{Binding DataReserva, StringFormat=dd/MM/yyyy}" Width="130"/>
 
+                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="190"/>
+
                 <DataGridTextColumn Header="Disponível desde" Binding="{Binding DataDisponivel, StringFormat=dd/MM/yyyy HH:mm}" Width="140"/>
+
+                <DataGridTextColumn Header="Disponível até" Binding="{Binding DisponivelAte}" Width="140"/>
 
                 <DataGridTextColumn Header="Ordem" Binding="{Binding Ordem}" Width="80"/>
 
                 <DataGridCheckBoxColumn Header="Ativa" Binding="{Binding Ativa}" Width="80"/>
-
             </DataGrid.Columns>
 
         </DataGrid>
