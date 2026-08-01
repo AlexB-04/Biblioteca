@@ -83,8 +83,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Background="Transparent"/>
-                    <Button x:Name="btnSair" Grid.Column="1" Content="Sair" Height="45" Margin="5,0,0,0" Background="#C62828" Foreground="White" Click="btnSair_Click"/>
+                    <Border x:Name="barraCreditos" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnCreditos" Grid.Column="1" Content="Créditos" Height="45" Margin="5,0,0,0" Click="btnCreditos_Click"/>
                 </Grid>
 
                 <Grid Margin="10,20,10,5">
@@ -93,8 +93,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border x:Name="barraCreditos" Grid.Column="0" Background="Transparent"/>
-                    <Button x:Name="btnCreditos" Grid.Column="1" Content="Créditos" Height="45" Margin="5,0,0,0" Click="btnCreditos_Click"/>
+                    <Border Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnSair" Grid.Column="1" Content="Sair" Height="45" Margin="5,0,0,0" Background="#C62828" Foreground="White" Click="btnSair_Click"/>
                 </Grid>
             </StackPanel>
         </Border>

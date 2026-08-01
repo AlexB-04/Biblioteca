@@ -6,6 +6,6 @@ namespace Biblioteca.Cliente.WPF.Services
 {
     public static class Config
     {
-        public const string ApiUrl = "http://localhost:56363/";
+        public const string ApiUrl = "http://alexb04-001-site1.htempurl.com/";
     }
 }
