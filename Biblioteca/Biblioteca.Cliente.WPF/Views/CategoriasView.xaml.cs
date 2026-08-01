@@ -28,7 +28,7 @@ namespace Biblioteca.Cliente.WPF.Views
         {
             btnAtualizarCategorias.IsEnabled = false;
 
-            Response response = await apiService.GetCategorias("http://localhost:56363/", "api/categorias");
+            Response response = await apiService.GetCategorias(Config.ApiUrl, "api/categorias");
 
             if (!response.IsSuccess)
             {
@@ -86,7 +86,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 Descricao = txtDescricao.Text
             };
 
-            Response response = await apiService.PostCategoria("http://localhost:56363/", "api/categorias", categoria);
+            Response response = await apiService.PostCategoria(Config.ApiUrl, "api/categorias", categoria);
 
             if (!response.IsSuccess)
             {
@@ -121,8 +121,7 @@ namespace Biblioteca.Cliente.WPF.Views
             categoriaSelecionada.Nome = txtNome.Text;
             categoriaSelecionada.Descricao = txtDescricao.Text;
 
-            Response response =
-                await apiService.PutCategoria("http://localhost:56363/", "api/categorias", categoriaSelecionada);
+            Response response = await apiService.PutCategoria(Config.ApiUrl, "api/categorias", categoriaSelecionada);
 
             if (!response.IsSuccess)
             {
@@ -154,7 +153,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeleteCategoria("http://localhost:56363/", "api/categorias", categoriaSelecionada.IdCategoria);
+            Response response = await apiService.DeleteCategoria(Config.ApiUrl, "api/categorias", categoriaSelecionada.IdCategoria);
 
             if (!response.IsSuccess)
             {

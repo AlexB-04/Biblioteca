@@ -33,7 +33,7 @@ namespace Biblioteca.Cliente.WPF.Views
         {
             btnAtualizarUtilizadores.IsEnabled = false;
 
-            Response response = await apiService.GetUtilizadores("http://localhost:56363/", "api/utilizadores");
+            Response response = await apiService.GetUtilizadores(Config.ApiUrl, "api/utilizadores");
 
             if (!response.IsSuccess)
             {
@@ -180,7 +180,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 Atrasos = atrasos
             };
 
-            Response response = await apiService.PostUtilizador("http://localhost:56363/", "api/utilizadores", utilizador);
+            Response response = await apiService.PostUtilizador(Config.ApiUrl, "api/utilizadores", utilizador);
 
             if (!response.IsSuccess)
             {
@@ -259,7 +259,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 BloqueadoAte = utilizadorSelecionado.BloqueadoAte
             };
 
-            Response response = await apiService.PutUtilizador("http://localhost:56363/", "api/utilizadores", utilizadorAlterado);
+            Response response = await apiService.PutUtilizador(Config.ApiUrl, "api/utilizadores", utilizadorAlterado);
 
             if (!response.IsSuccess)
             {
@@ -291,7 +291,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeleteUtilizador("http://localhost:56363/", "api/utilizadores", utilizadorSelecionado.IdUtilizador);
+            Response response = await apiService.DeleteUtilizador(Config.ApiUrl, "api/utilizadores", utilizadorSelecionado.IdUtilizador);
 
             if (!response.IsSuccess)
             {

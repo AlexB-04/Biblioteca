@@ -35,7 +35,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarPenalizacoesAsync()
         {
-            Response response = await apiService.GetPenalizacoes("http://localhost:56363/", "api/penalizacoes");
+            Response response = await apiService.GetPenalizacoes(Config.ApiUrl, "api/penalizacoes");
 
             if (!response.IsSuccess)
             {
@@ -49,7 +49,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarUtilizadoresAsync()
         {
-            Response response = await apiService.GetUtilizadores("http://localhost:56363/", "api/utilizadores");
+            Response response = await apiService.GetUtilizadores(Config.ApiUrl, "api/utilizadores");
 
             if (!response.IsSuccess)
             {
@@ -63,7 +63,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarEmprestimosAsync()
         {
-            Response response = await apiService.GetEmprestimos("http://localhost:56363/", "api/emprestimos");
+            Response response = await apiService.GetEmprestimos(Config.ApiUrl, "api/emprestimos");
 
             if (!response.IsSuccess)
             {
@@ -138,7 +138,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 Motivo = txtMotivo.Text.Trim()
             };
 
-            Response response = await apiService.PostPenalizacao("http://localhost:56363/", "api/penalizacoes", penalizacao);
+            Response response = await apiService.PostPenalizacao(Config.ApiUrl, "api/penalizacoes", penalizacao);
 
             if (!response.IsSuccess)
             {
@@ -177,7 +177,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.PutPenalizacao("http://localhost:56363/", "api/penalizacoes", penalizacaoSelecionada);
+            Response response = await apiService.PutPenalizacao(Config.ApiUrl, "api/penalizacoes", penalizacaoSelecionada);
 
             if (!response.IsSuccess)
             {
@@ -216,7 +216,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeletePenalizacao("http://localhost:56363/", "api/penalizacoes", penalizacaoSelecionada.IdPenalizacao);
+            Response response = await apiService.DeletePenalizacao(Config.ApiUrl, "api/penalizacoes", penalizacaoSelecionada.IdPenalizacao);
 
             if (!response.IsSuccess)
             {

@@ -31,7 +31,7 @@ namespace Biblioteca.Cliente.WPF.Views
         }
         private async Task CarregarEmprestimosAsync()
         {
-            Response response = await apiService.GetEmprestimos("http://localhost:56363/", "api/emprestimos");
+            Response response = await apiService.GetEmprestimos(Config.ApiUrl, "api/emprestimos");
 
             if (!response.IsSuccess)
             {
@@ -44,7 +44,7 @@ namespace Biblioteca.Cliente.WPF.Views
         }
         private async Task CarregarUtilizadoresAsync()
         {
-            Response response = await apiService.GetUtilizadores("http://localhost:56363/", "api/utilizadores");
+            Response response = await apiService.GetUtilizadores(Config.ApiUrl, "api/utilizadores");
 
             if (!response.IsSuccess)
             {
@@ -57,7 +57,7 @@ namespace Biblioteca.Cliente.WPF.Views
         }
         private async Task CarregarLivrosAsync()
         {
-            Response response = await apiService.GetLivros("http://localhost:56363/", "api/livros");
+            Response response = await apiService.GetLivros(Config.ApiUrl, "api/livros");
 
             if (!response.IsSuccess)
             {
@@ -94,7 +94,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 IdLivro = (int)cbLivros.SelectedValue
             };
 
-            Response response = await apiService.PostEmprestimo("http://localhost:56363/", "api/emprestimos", emprestimo);
+            Response response = await apiService.PostEmprestimo(Config.ApiUrl, "api/emprestimos", emprestimo);
 
             if (!response.IsSuccess)
             {
@@ -133,7 +133,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.PutEmprestimo("http://localhost:56363/", "api/emprestimos", emprestimoSelecionado);
+            Response response = await apiService.PutEmprestimo(Config.ApiUrl, "api/emprestimos", emprestimoSelecionado);
 
             if (!response.IsSuccess)
             {
@@ -172,7 +172,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeleteEmprestimo("http://localhost:56363/", "api/emprestimos", emprestimoSelecionado.IdEmprestimo);
+            Response response = await apiService.DeleteEmprestimo(Config.ApiUrl, "api/emprestimos", emprestimoSelecionado.IdEmprestimo);
 
             if (!response.IsSuccess)
             {

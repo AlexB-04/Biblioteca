@@ -44,7 +44,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarCategoriasAsync()
         {
-            Response response = await apiService.GetCategorias("http://localhost:56363/", "api/categorias");
+            Response response = await apiService.GetCategorias(Config.ApiUrl, "api/categorias");
 
             if (!response.IsSuccess)
             {
@@ -75,7 +75,7 @@ namespace Biblioteca.Cliente.WPF.Views
         {
             btnAtualizarLivros.IsEnabled = false;
 
-            Response response = await apiService.GetLivros("http://localhost:56363/", "api/livros");
+            Response response = await apiService.GetLivros(Config.ApiUrl, "api/livros");
 
             if (!response.IsSuccess)
             {
@@ -94,7 +94,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarEmprestimosAsync()
         {
-            Response response = await apiService.GetEmprestimos("http://localhost:56363/", "api/emprestimos");
+            Response response = await apiService.GetEmprestimos(Config.ApiUrl, "api/emprestimos");
 
             if (!response.IsSuccess)
             {
@@ -108,7 +108,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarReservasAsync()
         {
-            Response response = await apiService.GetReservas("http://localhost:56363/", "api/reservas");
+            Response response = await apiService.GetReservas(Config.ApiUrl, "api/reservas");
 
             if (!response.IsSuccess)
             {
@@ -263,7 +263,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 IdCategoria = idCategoria
             };
 
-            Response response = await apiService.PostLivro("http://localhost:56363/", "api/livros", livro);
+            Response response = await apiService.PostLivro(Config.ApiUrl, "api/livros", livro);
 
             if (!response.IsSuccess)
             {
@@ -337,7 +337,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 IdCategoria = idCategoria
             };
 
-            Response response = await apiService.PutLivro("http://localhost:56363/", "api/livros", livroAlterado);
+            Response response = await apiService.PutLivro(Config.ApiUrl, "api/livros", livroAlterado);
 
             if (!response.IsSuccess)
             {
@@ -369,7 +369,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeleteLivro("http://localhost:56363/", "api/livros", livroSelecionado.IdLivro);
+            Response response = await apiService.DeleteLivro(Config.ApiUrl, "api/livros", livroSelecionado.IdLivro);
 
             if (!response.IsSuccess)
             {

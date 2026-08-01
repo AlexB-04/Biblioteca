@@ -34,7 +34,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarReservasAsync()
         {
-            Response response = await apiService.GetReservas("http://localhost:56363/", "api/reservas");
+            Response response = await apiService.GetReservas(Config.ApiUrl, "api/reservas");
 
             if (!response.IsSuccess)
             {
@@ -47,7 +47,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarUtilizadoresAsync()
         {
-            Response response = await apiService.GetUtilizadores("http://localhost:56363/", "api/utilizadores");
+            Response response = await apiService.GetUtilizadores(Config.ApiUrl, "api/utilizadores");
 
             if (!response.IsSuccess)
             {
@@ -60,7 +60,7 @@ namespace Biblioteca.Cliente.WPF.Views
 
         private async Task CarregarLivrosAsync()
         {
-            Response response = await apiService.GetLivros("http://localhost:56363/", "api/livros");
+            Response response = await apiService.GetLivros(Config.ApiUrl, "api/livros");
 
             if (!response.IsSuccess)
             {
@@ -100,7 +100,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 IdLivro = (int)cbLivros.SelectedValue
             };
 
-            Response response = await apiService.PostReserva("http://localhost:56363/", "api/reservas", reserva);
+            Response response = await apiService.PostReserva(Config.ApiUrl, "api/reservas", reserva);
 
             if (!response.IsSuccess)
             {
@@ -140,7 +140,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.PutReserva("http://localhost:56363/", "api/reservas", reservaSelecionada);
+            Response response = await apiService.PutReserva(Config.ApiUrl, "api/reservas", reservaSelecionada);
 
             if (!response.IsSuccess)
             {
@@ -180,7 +180,7 @@ namespace Biblioteca.Cliente.WPF.Views
                 return;
             }
 
-            Response response = await apiService.DeleteReserva("http://localhost:56363/", "api/reservas", reservaSelecionada.IdReserva);
+            Response response = await apiService.DeleteReserva(Config.ApiUrl, "api/reservas", reservaSelecionada.IdReserva);
 
             if (!response.IsSuccess)
             {
