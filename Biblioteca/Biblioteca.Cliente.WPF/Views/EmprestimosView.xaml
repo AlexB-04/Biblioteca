@@ -6,73 +6,67 @@
              mc:Ignorable="d"
              d:DesignHeight="550"
              d:DesignWidth="900"
+             Background="#F5F5F5"
              Loaded="UserControl_Loaded">
 
-    <Grid Margin="10">
-
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <TextBlock Grid.Row="0" Text="Gestão de Empréstimos" FontSize="26" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <Button x:Name="btnAtualizarEmprestimos" Content="Atualizar" Width="100" Height="35" Click="btnAtualizarEmprestimos_Click"/>
+        <Border Grid.Row="1" Background="White" Padding="15" CornerRadius="6" Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Button x:Name="btnRegistarEmprestimo" Content="Registar" Width="100" Height="35" Margin="10,0,0,0" Click="btnRegistarEmprestimo_Click"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                    <Button x:Name="btnAtualizarEmprestimos" Content="Atualizar" Width="100" Height="35" Click="btnAtualizarEmprestimos_Click"/>
+                    <Button x:Name="btnRegistarEmprestimo" Content="Registar" Width="100" Height="35" Margin="10,0,0,0" Click="btnRegistarEmprestimo_Click"/>
+                    <Button x:Name="btnDevolverEmprestimo" Content="Devolver" Width="100" Height="35" Margin="10,0,0,0" Click="btnDevolverEmprestimo_Click"/>
+                    <Button x:Name="btnEliminarEmprestimo" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarEmprestimo_Click"/>
+                </StackPanel>
 
-            <Button x:Name="btnDevolverEmprestimo" Content="Devolver" Width="100" Height="35" Margin="10,0,0,0" Click="btnDevolverEmprestimo_Click"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnEliminarEmprestimo" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarEmprestimo_Click"/>
+                    <TextBlock Grid.Column="0" Text="Utilizador:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="cbUtilizadores" Grid.Column="1" Height="30" Margin="0,0,20,0" DisplayMemberPath="Nome" SelectedValuePath="IdUtilizador"/>
 
-        </StackPanel>
+                    <TextBlock Grid.Column="2" Text="Livro:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="cbLivros" Grid.Column="3" Height="30" DisplayMemberPath="Titulo" SelectedValuePath="IdLivro"/>
+                </Grid>
+            </Grid>
+        </Border>
 
-        <Grid Grid.Row="2">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0" Text="Utilizador:" VerticalAlignment="Center" Margin="5"/>
-
-            <ComboBox x:Name="cbUtilizadores" Grid.Column="1" Height="30" Margin="5" DisplayMemberPath="Nome" SelectedValuePath="IdUtilizador"/>
-
-            <TextBlock Grid.Column="2" Text="Livro:" VerticalAlignment="Center" Margin="5"/>
-
-            <ComboBox x:Name="cbLivros" Grid.Column="3" Height="30" Margin="5" DisplayMemberPath="Titulo" SelectedValuePath="IdLivro"/>
-
-        </Grid>
-
-        <DataGrid x:Name="dgEmprestimos" Grid.Row="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dgEmprestimos_SelectionChanged">
+        <DataGrid x:Name="dgEmprestimos"
+                  Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  HorizontalScrollBarVisibility="Auto"
+                  SelectionChanged="dgEmprestimos_SelectionChanged">
 
             <DataGrid.Columns>
-
                 <DataGridTextColumn Header="ID" Binding="{Binding IdEmprestimo}" Width="50"/>
-
                 <DataGridTextColumn Header="Utilizador" Binding="{Binding Utilizador}" Width="*"/>
-
                 <DataGridTextColumn Header="Livro" Binding="{Binding Livro}" Width="*"/>
-
                 <DataGridTextColumn Header="Data empréstimo" Binding="{Binding DataEmprestimo, StringFormat=dd/MM/yyyy}" Width="120"/>
-
                 <DataGridTextColumn Header="Prazo devolução" Binding="{Binding PrazoDevolucao, StringFormat=dd/MM/yyyy}" Width="120"/>
-
                 <DataGridTextColumn Header="Data devolução" Binding="{Binding DataDevolucao, StringFormat=dd/MM/yyyy}" Width="120"/>
-
                 <DataGridCheckBoxColumn Header="Devolvido" Binding="{Binding Devolvido}" Width="80"/>
-
                 <DataGridTextColumn Header="Multa" Binding="{Binding Multa, StringFormat={}{0:F2} €}" Width="80"/>
-
             </DataGrid.Columns>
-
         </DataGrid>
-
     </Grid>
-
 </UserControl>

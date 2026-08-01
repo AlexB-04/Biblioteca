@@ -7,36 +7,98 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="#252526">
-
             <StackPanel>
-
                 <TextBlock Text="Biblioteca" Foreground="White" FontSize="24" FontWeight="Bold" Margin="20" HorizontalAlignment="Center"/>
 
-                <Button Content="Categorias" Height="45" Margin="10,5" Click="btnCategorias_Click"/>
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Livros" Height="45" Margin="10,5" Click="btnLivros_Click"/>
+                    <Border x:Name="barraCategorias" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnCategorias" Grid.Column="1" Content="Categorias" Height="45" Margin="5,0,0,0" Click="btnCategorias_Click"/>
+                </Grid>
 
-                <Button Content="Utilizadores" Height="45" Margin="10,5" Click="btnUtilizadores_Click"/>
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Empréstimos" Height="45" Margin="10,5" Click="btnEmprestimos_Click"/>
+                    <Border x:Name="barraLivros" Grid.Column="0" Background="Transparent"/>
+                    
+                    <Button x:Name="btnLivros" Grid.Column="1" Content="Livros" Height="45" Margin="5,0,0,0" Click="btnLivros_Click"/>
+                </Grid>
 
-                <Button Content="Reservas" Height="45" Margin="10,5" Click="btnReservas_Click"/>
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Penalizações" Height="45" Margin="10,5" Click="btnPenalizacoes_Click"/>
+                    <Border x:Name="barraUtilizadores" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnUtilizadores" Grid.Column="1" Content="Utilizadores" Height="45" Margin="5,0,0,0" Click="btnUtilizadores_Click"/>
+                </Grid>
 
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="barraEmprestimos" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnEmprestimos" Grid.Column="1" Content="Empréstimos" Height="45" Margin="5,0,0,0" Click="btnEmprestimos_Click"/>
+                </Grid>
+
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="barraReservas" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnReservas" Grid.Column="1" Content="Reservas" Height="45" Margin="5,0,0,0" Click="btnReservas_Click"/>
+                </Grid>
+
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="barraPenalizacoes" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnPenalizacoes" Grid.Column="1" Content="Penalizações" Height="45" Margin="5,0,0,0" Click="btnPenalizacoes_Click"/>
+                </Grid>
+
+                <Grid Margin="10,20,10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnSair" Grid.Column="1" Content="Sair" Height="45" Margin="5,0,0,0" Background="#C62828" Foreground="White" Click="btnSair_Click"/>
+                </Grid>
+
+                <Grid Margin="10,20,10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="barraCreditos" Grid.Column="0" Background="Transparent"/>
+                    <Button x:Name="btnCreditos" Grid.Column="1" Content="Créditos" Height="45" Margin="5,0,0,0" Click="btnCreditos_Click"/>
+                </Grid>
             </StackPanel>
-
         </Border>
 
         <ContentControl x:Name="conteudoPrincipal" Grid.Column="1"/>
-
     </Grid>
-
 </Window>

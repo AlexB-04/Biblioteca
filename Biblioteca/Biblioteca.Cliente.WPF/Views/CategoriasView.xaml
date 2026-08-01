@@ -6,42 +6,55 @@
              mc:Ignorable="d"
              d:DesignHeight="500"
              d:DesignWidth="800"
+             Background="#F5F5F5"
              Loaded="UserControl_Loaded">
 
-    <Grid Margin="10">
-
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
+        <TextBlock Grid.Row="0" Text="Gestão de Categorias" FontSize="26" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <Button x:Name="btnAtualizarCategorias" Content="Atualizar" Width="180" Height="35" Click="btnAtualizarCategorias_Click"/>
+        <Border Grid.Row="1" Background="White" Padding="15" CornerRadius="6" Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Button x:Name="btnGuardarCategoria" Content="Guardar" Width="100" Height="35" Margin="10,0,0,0" Click="btnGuardarCategoria_Click"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                    <Button x:Name="btnAtualizarCategorias" Content="Atualizar" Width="180" Height="35" Click="btnAtualizarCategorias_Click"/>
+                    <Button x:Name="btnGuardarCategoria" Content="Guardar" Width="100" Height="35" Margin="10,0,0,0" Click="btnGuardarCategoria_Click"/>
+                    <Button x:Name="btnAlterarCategoria" Content="Alterar" Width="100" Height="35" Margin="10,0,0,0" Click="btnAlterarCategoria_Click"/>
+                    <Button x:Name="btnEliminarCategoria" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarCategoria_Click"/>
+                </StackPanel>
 
-            <Button x:Name="btnAlterarCategoria" Content="Alterar" Width="100" Height="35" Margin="10,0,0,0"  Click="btnAlterarCategoria_Click"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnEliminarCategoria" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarCategoria_Click"/>
+                    <TextBlock Grid.Column="0" Text="Nome:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="txtNome" Grid.Column="1" Height="30"/>
 
-        </StackPanel>
+                    <TextBlock Grid.Column="2" Text="Descrição:" VerticalAlignment="Center" Margin="20,0,10,0"/>
+                    <TextBox x:Name="txtDescricao" Grid.Column="3" Height="30"/>
+                </Grid>
+            </Grid>
+        </Border>
 
-        <StackPanel Grid.Row="1" Margin="0,10,0,0">
-
-            <TextBlock Text="Nome"/>
-
-            <TextBox x:Name="txtNome" Height="28"/>
-
-            <TextBlock Text="Descrição" Margin="0,8,0,0"/>
-
-            <TextBox x:Name="txtDescricao" Height="28"/>
-
-        </StackPanel>
-
-        <DataGrid x:Name="dgCategorias" Grid.Row="2" Margin="0,10,0,0" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="dgCategorias_SelectionChanged"/>
-
+        <DataGrid x:Name="dgCategorias"
+                  Grid.Row="2"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  HorizontalScrollBarVisibility="Auto"
+                  SelectionChanged="dgCategorias_SelectionChanged"/>
     </Grid>
-
 </UserControl>

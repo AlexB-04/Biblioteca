@@ -6,79 +6,87 @@
              mc:Ignorable="d"
              d:DesignHeight="550"
              d:DesignWidth="900"
+             Background="#F5F5F5"
              Loaded="UserControl_Loaded">
 
-    <Grid Margin="10">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button x:Name="btnAtualizarUtilizadores" Content="Atualizar" Width="100" Height="35" Click="btnAtualizarUtilizadores_Click"/>
-            <Button x:Name="btnGuardarUtilizador" Content="Guardar" Width="100" Height="35" Margin="10,0,0,0" Click="btnGuardarUtilizador_Click"/>
-            <Button x:Name="btnAlterarUtilizador" Content="Alterar" Width="100" Height="35" Margin="10,0,0,0" Click="btnAlterarUtilizador_Click"/>
-            <Button x:Name="btnEliminarUtilizador" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarUtilizador_Click"/>
-        </StackPanel>
+        <TextBlock Grid.Row="0" Text="Gestão de Utilizadores" FontSize="26" FontWeight="Bold" Margin="0,0,0,20"/>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Background="White" Padding="15" CornerRadius="6" Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                    <Button x:Name="btnAtualizarUtilizadores" Content="Atualizar" Width="100" Height="35" Click="btnAtualizarUtilizadores_Click"/>
+                    <Button x:Name="btnGuardarUtilizador" Content="Guardar" Width="100" Height="35" Margin="10,0,0,0" Click="btnGuardarUtilizador_Click"/>
+                    <Button x:Name="btnAlterarUtilizador" Content="Alterar" Width="100" Height="35" Margin="10,0,0,0" Click="btnAlterarUtilizador_Click"/>
+                    <Button x:Name="btnEliminarUtilizador" Content="Eliminar" Width="100" Height="35" Margin="10,0,0,0" Click="btnEliminarUtilizador_Click"/>
+                </StackPanel>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Nome:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtNome" Grid.Row="0" Grid.Column="1" Height="28" Margin="5"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Contacto:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtContacto" Grid.Row="0" Grid.Column="3" Height="28" Margin="5"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtEmail" Grid.Row="1" Grid.Column="1" Height="28" Margin="5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Nome:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox x:Name="txtNome" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,20,10"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="Tipo de utilizador:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtTipoUtilizador" Grid.Row="1" Grid.Column="3" Height="28" Margin="5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Contacto:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox x:Name="txtContacto" Grid.Row="0" Grid.Column="3" Height="30" Margin="0,0,0,10"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Limite de empréstimos:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtLimiteEmprestimos" Grid.Row="2" Grid.Column="1" Height="28" Margin="5"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox x:Name="txtEmail" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,20,10"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="2" Text="Atrasos:" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="txtAtrasos" Grid.Row="2" Grid.Column="3" Height="28" Margin="5"/>
-        </Grid>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Tipo de utilizador:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                    <TextBox x:Name="txtTipoUtilizador" Grid.Row="1" Grid.Column="3" Height="30" Margin="0,0,0,10"/>
 
-        <Border Grid.Row="4" Background="#F5F5F5" BorderBrush="#D0D0D0" BorderThickness="1" Padding="10">
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Limite de empréstimos:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="txtLimiteEmprestimos" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,20,0"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Atrasos:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="txtAtrasos" Grid.Row="2" Grid.Column="3" Height="30"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Background="White" Padding="15" CornerRadius="6" Margin="0,0,0,15">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Pesquisar:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox x:Name="txtPesquisaUtilizador" Grid.Column="1" Height="28"/>
+                <TextBox x:Name="txtPesquisaUtilizador" Grid.Column="1" Height="30" Margin="0,0,20,0"/>
 
-                <Button x:Name="btnPesquisarUtilizador" Grid.Column="3" Content="Pesquisar" Height="30" Margin="0,0,10,0" Click="btnPesquisarUtilizador_Click"/>
-                <Button x:Name="btnLimparPesquisa" Grid.Column="4" Content="Limpar" Height="30" Click="btnLimparPesquisa_Click"/>
+                <Button x:Name="btnPesquisarUtilizador" Grid.Column="2" Content="Pesquisar" Height="30" Margin="0,0,10,0" Click="btnPesquisarUtilizador_Click"/>
+                <Button x:Name="btnLimparPesquisa" Grid.Column="3" Content="Limpar" Height="30" Click="btnLimparPesquisa_Click"/>
             </Grid>
         </Border>
 
         <DataGrid x:Name="dgUtilizadores"
-                  Grid.Row="6"
+                  Grid.Row="3"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   SelectionMode="Single"
