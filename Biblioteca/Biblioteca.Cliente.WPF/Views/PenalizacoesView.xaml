@@ -67,25 +67,23 @@
         <DataGrid x:Name="dgPenalizacoes" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dgPenalizacoes_SelectionChanged" HorizontalScrollBarVisibility="Auto">
 
             <DataGrid.Columns>
-
                 <DataGridTextColumn Header="ID" Binding="{Binding IdPenalizacao}" Width="55"/>
-
-                <DataGridTextColumn Header="Utilizador" Binding="{Binding Utilizador}" Width="160"/>
-
+                
+                <DataGridTextColumn Header="Utilizador" Binding="{Binding Utilizador}" Width="*"/>
+                
                 <DataGridTextColumn Header="Empréstimo" Binding="{Binding IdEmprestimo}" Width="90"/>
-
+                
                 <DataGridTextColumn Header="Valor" Binding="{Binding Valor, StringFormat={}{0:N2} €}" Width="80"/>
-
+                
                 <DataGridTextColumn Header="Dias" Binding="{Binding DiasAtraso}" Width="60"/>
-
-                <DataGridTextColumn Header="Motivo" Binding="{Binding Motivo}" Width="250"/>
-
+                
+                <DataGridTextColumn Header="Motivo" Binding="{Binding Motivo}" Width="2*"/>
+                
                 <DataGridTextColumn Header="Data" Binding="{Binding DataPenalizacao, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="145"/>
-
+                
                 <DataGridCheckBoxColumn Header="Pago" Binding="{Binding Pago}" Width="60"/>
-
-                <DataGridTextColumn Header="Data do pagamento" Binding="{Binding DataPagamento, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="145"/>
-
+                
+                <DataGridTextColumn Header="Data do pagamento" Binding="{Binding DataPagamento, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="155"/>
             </DataGrid.Columns>
 
         </DataGrid>

@@ -103,11 +103,31 @@
         </Border>
 
         <DataGrid x:Name="dgLivros"
-                  Grid.Row="3"
-                  AutoGenerateColumns="True"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  HorizontalScrollBarVisibility="Auto"
-                  SelectionChanged="dgLivros_SelectionChanged"/>
+          Grid.Row="3"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          SelectionMode="Single"
+          HorizontalScrollBarVisibility="Auto"
+          SelectionChanged="dgLivros_SelectionChanged">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding IdLivro}" Width="55"/>
+
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="2*"/>
+
+                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="1.5*"/>
+
+                <DataGridTextColumn Header="Editora" Binding="{Binding Editora}" Width="1.3*"/>
+
+                <DataGridTextColumn Header="Ano" Binding="{Binding AnoPublicacao}" Width="75"/>
+
+                <DataGridTextColumn Header="Género" Binding="{Binding Genero}" Width="*"/>
+
+                <DataGridTextColumn Header="Exemplares" Binding="{Binding ExemplaresDisponiveis}" Width="90"/>
+
+                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" Width="*"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
     </Grid>
 </UserControl>
