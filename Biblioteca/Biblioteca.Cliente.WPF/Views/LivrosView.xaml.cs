@@ -129,11 +129,13 @@ namespace Biblioteca.Cliente.WPF.Views
             if (!string.IsNullOrWhiteSpace(pesquisa))
             {
                 livrosFiltrados = livrosFiltrados.Where(l =>
-                    l.Titulo.ToLower().Contains(pesquisa) ||
-                    l.Autor.ToLower().Contains(pesquisa) ||
-                    l.Genero.ToLower().Contains(pesquisa) ||
-                    l.Categoria.ToLower().Contains(pesquisa) ||
-                    l.AnoPublicacao.ToString().Contains(pesquisa));
+                l.Titulo.ToLower().Contains(pesquisa) ||
+                l.Autor.ToLower().Contains(pesquisa) ||
+                (!string.IsNullOrWhiteSpace(l.Genero) &&
+                l.Genero.ToLower().Contains(pesquisa)) ||
+                (!string.IsNullOrWhiteSpace(l.Categoria) &&
+                l.Categoria.ToLower().Contains(pesquisa)) ||
+                l.AnoPublicacao.ToString().Contains(pesquisa));
             }
 
             if (cmbFiltroCategoria.SelectedValue != null)

@@ -1,39 +1,52 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
+﻿@{
+    ViewBag.Title = "Início";
+}
 
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+<main>
+    <section class="row" aria-labelledby="bibliotecaTitle">
+        <h1 id="bibliotecaTitle">Biblioteca API</h1>
+
+        <p class="lead">
+            Sistema de Gestão de Biblioteca desenvolvido para a UC00608.
+        </p>
+
+        <p>
+            Esta API permite gerir categorias, livros, utilizadores,
+            empréstimos, reservas e penalizações.
+        </p>
+
+        <p>
+            O cliente WPF comunica com esta API para consultar,
+            criar, alterar e eliminar os dados armazenados no SQL Server.
+        </p>
+    </section>
+
+    <div class="row">
+        <section class="col-md-4" aria-labelledby="livrosTitle">
+            <h2 id="livrosTitle">Livros e Categorias</h2>
+
+            <p>
+                Organização dos livros por categorias e controlo
+                dos exemplares disponíveis.
+            </p>
+        </section>
+
+        <section class="col-md-4" aria-labelledby="emprestimosTitle">
+            <h2 id="emprestimosTitle">Empréstimos e Reservas</h2>
+
+            <p>
+                Gestão de empréstimos, devoluções,
+                reservas e filas de espera.
+            </p>
+        </section>
+
+        <section class="col-md-4" aria-labelledby="penalizacoesTitle">
+            <h2 id="penalizacoesTitle">Penalizações</h2>
+
+            <p>
+                Controlo de atrasos, multas,
+                pagamentos e bloqueios temporários.
+            </p>
+        </section>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
-</html>
+</main>
